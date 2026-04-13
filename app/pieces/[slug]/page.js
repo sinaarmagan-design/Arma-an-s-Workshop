@@ -47,7 +47,7 @@ export default async function PiecePage({ params }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-16 items-start">
         {/* Image */}
-        <div className="relative w-full aspect-[3/4] bg-white border border-gray-100 overflow-hidden">
+        <div className="relative w-full aspect-square bg-white overflow-hidden">
           <Image
             src={piece.imageUrl}
             alt={`${piece.brand} ${piece.title}`}

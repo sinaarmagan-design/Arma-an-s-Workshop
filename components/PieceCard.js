@@ -13,7 +13,7 @@ export default function PieceCard({ piece }) {
   return (
     <Link href={`/pieces/${piece.slug}`} className="group block">
       {/* Image container */}
-      <div className="relative overflow-hidden bg-white aspect-[3/4] border border-gray-100">
+      <div className="relative overflow-hidden bg-white aspect-square">
         <Image
           src={piece.imageUrl}
           alt={`${piece.brand} ${piece.title}`}

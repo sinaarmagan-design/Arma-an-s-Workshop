@@ -5,12 +5,12 @@
 }
 
 html {
-  background: #fafafa;
+  background: #f0ebe3;
   color: #111111;
 }
 
 body {
-  background: #fafafa;
+  background: #f0ebe3;
   color: #111111;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
