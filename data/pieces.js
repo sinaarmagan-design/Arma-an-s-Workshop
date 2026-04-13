@@ -75,7 +75,7 @@ export const pieces = [
     price: 34300,
     category: "accessories",
     subcategory: "Watches",
-    imageUrl: "https://picsum.photos/seed/armaanw5/800/1067",
+    imageUrl: "/images/Laurent-Ferrier_Classic-Origin-Blue_Watch_LCF036.T.CG_Front-Soldat_FixedTEMP_1000x.webp",
     slug: "laurent-ferrier-classic-origin-blue",
   },
 ];
