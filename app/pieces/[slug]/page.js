@@ -3,6 +3,14 @@ import Link from "next/link";
 import { pieces } from "@/data/pieces";
 import { notFound } from "next/navigation";
 
+function formatPrice(price) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(price);
+}
+
 export async function generateStaticParams() {
   return pieces.map((p) => ({ slug: p.slug }));
 }
@@ -12,8 +20,8 @@ export async function generateMetadata({ params }) {
   const piece = pieces.find((p) => p.slug === slug);
   if (!piece) return {};
   return {
-    title: `${piece.title} — Armaan's Workshop`,
-    description: `${piece.medium}, ${piece.year}. ${piece.dimensions}.`,
+    title: `${piece.brand} ${piece.title} — Armaan's Workshop`,
+    description: `${piece.brand} ${piece.title}, ${piece.year}. ${piece.subcategory ?? piece.category}.`,
   };
 }
 
@@ -22,7 +30,6 @@ export default async function PiecePage({ params }) {
   const piece = pieces.find((p) => p.slug === slug);
   if (!piece) notFound();
 
-  // Find prev/next for navigation
   const idx = pieces.findIndex((p) => p.slug === slug);
   const prev = idx > 0 ? pieces[idx - 1] : null;
   const next = idx < pieces.length - 1 ? pieces[idx + 1] : null;
@@ -35,15 +42,15 @@ export default async function PiecePage({ params }) {
         className="text-xs font-light tracking-[0.18em] uppercase text-gray-400 hover:text-gray-900 transition-colors duration-200 inline-flex items-center gap-2 mb-14"
       >
         <span aria-hidden="true">&larr;</span>
-        <span>All Works</span>
+        <span>All Items</span>
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-16 items-start">
         {/* Image */}
-        <div className="relative w-full aspect-[3/4] bg-gray-100 overflow-hidden">
+        <div className="relative w-full aspect-[3/4] bg-white border border-gray-100 overflow-hidden">
           <Image
             src={piece.imageUrl}
-            alt={piece.title}
+            alt={`${piece.brand} ${piece.title}`}
             fill
             className="object-cover"
             sizes="(max-width: 1024px) 100vw, 60vw"
@@ -54,26 +61,36 @@ export default async function PiecePage({ params }) {
         {/* Details */}
         <div className="lg:pt-4 space-y-10">
           <div>
-            <h1 className="text-2xl font-light text-gray-900 tracking-tight leading-snug mb-2">
+            <p className="text-[10px] font-light text-gray-400 tracking-[0.25em] uppercase mb-2">
+              {piece.brand}
+            </p>
+            <h1 className="text-2xl font-light text-gray-900 tracking-tight leading-snug mb-3">
               {piece.title}
             </h1>
-            <p className="text-xs font-light text-gray-400 tracking-[0.2em] uppercase">
-              {piece.year}
-            </p>
+            {piece.price != null && (
+              <p className="text-lg font-light text-gray-700 tracking-wide">
+                {formatPrice(piece.price)}
+              </p>
+            )}
           </div>
 
           <dl className="space-y-7">
             <div>
               <dt className="text-[10px] font-light tracking-[0.25em] uppercase text-gray-400 mb-1.5">
-                Medium
+                Year
               </dt>
-              <dd className="text-sm font-light text-gray-800">{piece.medium}</dd>
+              <dd className="text-sm font-light text-gray-800">{piece.year}</dd>
             </div>
+
             <div>
               <dt className="text-[10px] font-light tracking-[0.25em] uppercase text-gray-400 mb-1.5">
-                Dimensions
+                Category
               </dt>
-              <dd className="text-sm font-light text-gray-800">{piece.dimensions}</dd>
+              <dd className="text-sm font-light text-gray-800 capitalize">
+                {piece.subcategory
+                  ? `${piece.subcategory} · ${piece.category}`
+                  : piece.category}
+              </dd>
             </div>
           </dl>
         </div>
@@ -90,6 +107,9 @@ export default async function PiecePage({ params }) {
               <span className="text-[10px] font-light tracking-[0.2em] uppercase text-gray-400 group-hover:text-gray-900 transition-colors duration-200">
                 &larr; &nbsp; Previous
               </span>
+              <span className="text-xs font-light text-gray-400 group-hover:text-gray-600 transition-colors duration-200 uppercase tracking-[0.15em]">
+                {prev.brand}
+              </span>
               <span className="text-sm font-light text-gray-600 group-hover:text-gray-900 transition-colors duration-200">
                 {prev.title}
               </span>
@@ -105,6 +125,9 @@ export default async function PiecePage({ params }) {
             >
               <span className="text-[10px] font-light tracking-[0.2em] uppercase text-gray-400 group-hover:text-gray-900 transition-colors duration-200">
                 Next &nbsp; &rarr;
+              </span>
+              <span className="text-xs font-light text-gray-400 group-hover:text-gray-600 transition-colors duration-200 uppercase tracking-[0.15em]">
+                {next.brand}
               </span>
               <span className="text-sm font-light text-gray-600 group-hover:text-gray-900 transition-colors duration-200">
                 {next.title}
