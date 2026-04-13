@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import PieceCard from "./PieceCard";
-import { categories } from "@/data/pieces";
 
-export default function GalleryGrid({ pieces }) {
+export default function GalleryGrid({ pieces, categories }) {
   const [activeCategory, setActiveCategory] = useState("all");
   const [activeSubcategory, setActiveSubcategory] = useState(null);
 
@@ -25,7 +24,7 @@ export default function GalleryGrid({ pieces }) {
   return (
     <div>
       {/* Category tabs */}
-      <div className="flex items-center gap-8 mb-6 border-b border-gray-100 overflow-x-auto">
+      <div className="flex items-center gap-8 mb-6 border-b border-gray-200 overflow-x-auto">
         {categories.map((cat) => (
           <button
             key={cat.slug}
@@ -46,10 +45,10 @@ export default function GalleryGrid({ pieces }) {
         <div className="flex items-center gap-2 mb-10 flex-wrap">
           <button
             onClick={() => setActiveSubcategory(null)}
-            className={`text-[10px] font-light tracking-[0.15em] uppercase px-3 py-1.5 border transition-colors duration-200 ${
+            className={`text-[10px] font-light tracking-[0.15em] uppercase px-3 py-1.5 border transition-colors duration-200 rounded-full ${
               !activeSubcategory
                 ? "border-gray-900 text-gray-900"
-                : "border-gray-200 text-gray-400 hover:text-gray-700 hover:border-gray-400"
+                : "border-gray-300 text-gray-400 hover:text-gray-700 hover:border-gray-400"
             }`}
           >
             All
@@ -60,10 +59,10 @@ export default function GalleryGrid({ pieces }) {
               onClick={() =>
                 setActiveSubcategory(sub === activeSubcategory ? null : sub)
               }
-              className={`text-[10px] font-light tracking-[0.15em] uppercase px-3 py-1.5 border transition-colors duration-200 ${
+              className={`text-[10px] font-light tracking-[0.15em] uppercase px-3 py-1.5 border transition-colors duration-200 rounded-full ${
                 activeSubcategory === sub
                   ? "border-gray-900 text-gray-900"
-                  : "border-gray-200 text-gray-400 hover:text-gray-700 hover:border-gray-400"
+                  : "border-gray-300 text-gray-400 hover:text-gray-700 hover:border-gray-400"
               }`}
             >
               {sub}

@@ -38,11 +38,11 @@ export default async function PiecePage({ params }) {
     <div className="max-w-5xl mx-auto px-6 py-16">
       {/* Back link */}
       <Link
-        href="/"
+        href={`/${piece.section}`}
         className="text-xs font-light tracking-[0.18em] uppercase text-gray-400 hover:text-gray-900 transition-colors duration-200 inline-flex items-center gap-2 mb-14"
       >
         <span aria-hidden="true">&larr;</span>
-        <span>All Items</span>
+        <span>{piece.section}</span>
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-16 items-start">
