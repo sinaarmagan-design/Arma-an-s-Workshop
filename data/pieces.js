@@ -5,7 +5,7 @@ export const pieces = [
     year: 2024,
     medium: "Oil on canvas",
     dimensions: '24" × 36"',
-    imageUrl: "https://picsum.photos/seed/untitled-i/800/1000",
+    imageUrl: "https://picsum.photos/seed/armaanw1/800/1067",
     slug: "untitled-i",
   },
   {
@@ -14,7 +14,7 @@ export const pieces = [
     year: 2024,
     medium: "Watercolor on paper",
     dimensions: '18" × 24"',
-    imageUrl: "https://picsum.photos/seed/study-blue/800/600",
+    imageUrl: "https://picsum.photos/seed/armaanw2/800/1067",
     slug: "study-in-blue",
   },
   {
@@ -23,7 +23,7 @@ export const pieces = [
     year: 2023,
     medium: "Charcoal on paper",
     dimensions: '12" × 16"',
-    imageUrl: "https://picsum.photos/seed/form-7/700/900",
+    imageUrl: "https://picsum.photos/seed/armaanw3/800/1067",
     slug: "form-no-7",
   },
   {
@@ -32,7 +32,7 @@ export const pieces = [
     year: 2023,
     medium: "Acrylic on canvas",
     dimensions: '30" × 40"',
-    imageUrl: "https://picsum.photos/seed/evening-light/900/700",
+    imageUrl: "https://picsum.photos/seed/armaanw4/800/1067",
     slug: "evening-light",
   },
 ];
