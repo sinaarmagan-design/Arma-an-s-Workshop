@@ -24,7 +24,7 @@ export default function Home() {
             About
           </p>
           <p className="text-sm font-light text-gray-600 leading-7">
-            Armaan&apos;s Workshop is a personal catalogue of things worth
+            The Armand Edit is a personal catalogue of things worth
             owning — clothing, shoes, accessories, and vehicles, collected and
             documented over time. Each piece is chosen with care.
           </p>

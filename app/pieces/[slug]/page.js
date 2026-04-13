@@ -20,7 +20,7 @@ export async function generateMetadata({ params }) {
   const piece = pieces.find((p) => p.slug === slug);
   if (!piece) return {};
   return {
-    title: `${piece.brand} ${piece.title} — Armaan's Workshop`,
+    title: `${piece.brand} ${piece.title} — The Armand Edit`,
     description: `${piece.brand} ${piece.title}, ${piece.year}. ${piece.subcategory ?? piece.category}.`,
   };
 }

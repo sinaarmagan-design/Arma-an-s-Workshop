@@ -8,7 +8,7 @@ export default function Header() {
           href="/"
           className="text-xs font-light tracking-[0.2em] uppercase text-gray-900 hover:text-gray-400 transition-colors duration-300"
         >
-          Armaan&apos;s Workshop
+          The Armand Edit
         </Link>
 
         <nav className="flex items-center gap-10">

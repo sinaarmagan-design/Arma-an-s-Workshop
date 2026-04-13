@@ -26,13 +26,13 @@ const geist = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Armaan's Workshop",
+  title: "The Armand Edit",
   description:
-    "A curated collection of works by Armaan — paintings, drawings, and studies.",
+    "A curated collection of goods by Armand — selected with care.",
   openGraph: {
-    title: "Armaan's Workshop",
+    title: "The Armand Edit",
     description:
-      "A curated collection of works by Armaan — paintings, drawings, and studies.",
+      "A curated collection of goods by Armand — selected with care.",
     type: "website",
   },
 };
