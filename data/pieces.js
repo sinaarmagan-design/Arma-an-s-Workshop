@@ -67,4 +67,15 @@ export const pieces = [
     imageUrl: "https://picsum.photos/seed/armaanw4/800/1067",
     slug: "porsche-911-turbo-s",
   },
+  {
+    id: 5,
+    brand: "Laurent Ferrier",
+    title: "Classic Origin Blue",
+    year: 2023,
+    price: 34300,
+    category: "accessories",
+    subcategory: "Watches",
+    imageUrl: "https://picsum.photos/seed/armaanw5/800/1067",
+    slug: "laurent-ferrier-classic-origin-blue",
+  },
 ];
