@@ -1,0 +1,38 @@
+export const pieces = [
+  {
+    id: 1,
+    title: "Untitled I",
+    year: 2024,
+    medium: "Oil on canvas",
+    dimensions: '24" × 36"',
+    imageUrl: "https://picsum.photos/seed/untitled-i/800/1000",
+    slug: "untitled-i",
+  },
+  {
+    id: 2,
+    title: "Study in Blue",
+    year: 2024,
+    medium: "Watercolor on paper",
+    dimensions: '18" × 24"',
+    imageUrl: "https://picsum.photos/seed/study-blue/800/600",
+    slug: "study-in-blue",
+  },
+  {
+    id: 3,
+    title: "Form No. 7",
+    year: 2023,
+    medium: "Charcoal on paper",
+    dimensions: '12" × 16"',
+    imageUrl: "https://picsum.photos/seed/form-7/700/900",
+    slug: "form-no-7",
+  },
+  {
+    id: 4,
+    title: "Evening Light",
+    year: 2023,
+    medium: "Acrylic on canvas",
+    dimensions: '30" × 40"',
+    imageUrl: "https://picsum.photos/seed/evening-light/900/700",
+    slug: "evening-light",
+  },
+];
