@@ -241,6 +241,7 @@ export const pieces = [
       "/images/ig_prd_ovw_eames_lounge_chair_and_ottoman_03.jpg",
       "/images/it_prd_dtl_eames_lounge_chair_and_ottoman_07.jpg",
     ],
+    objectFit: "contain",
     slug: "herman-miller-eames-lounge-chair",
   },
   {

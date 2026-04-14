@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 
-export default function ImageGallery({ images, alt }) {
+export default function ImageGallery({ images, alt, objectFit = "cover" }) {
   const [current, setCurrent] = useState(0);
   const touchStart = useRef(null);
 
@@ -39,7 +39,7 @@ export default function ImageGallery({ images, alt }) {
           src={images[current]}
           alt={`${alt} — ${current + 1} of ${images.length}`}
           fill
-          className="object-contain"
+          className={objectFit === "contain" ? "object-contain" : "object-cover"}
           priority={current === 0}
         />
 
