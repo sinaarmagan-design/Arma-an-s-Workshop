@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { pieces } from "@/data/pieces";
 import { notFound } from "next/navigation";
+import ImageGallery from "@/components/ImageGallery";
 
 function formatPrice(price) {
   return new Intl.NumberFormat("en-US", {
@@ -46,17 +47,11 @@ export default async function PiecePage({ params }) {
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-16 items-start">
-        {/* Image */}
-        <div className="relative w-full aspect-square bg-white overflow-hidden rounded-xl">
-          <Image
-            src={piece.imageUrl}
-            alt={`${piece.brand} ${piece.title}`}
-            fill
-            className="object-cover"
-            sizes="(max-width: 1024px) 100vw, 60vw"
-            priority
-          />
-        </div>
+        {/* Image / Gallery */}
+        <ImageGallery
+          images={piece.images ?? [piece.imageUrl]}
+          alt={`${piece.brand} ${piece.title}`}
+        />
 
         {/* Details */}
         <div className="lg:pt-4 space-y-10">
