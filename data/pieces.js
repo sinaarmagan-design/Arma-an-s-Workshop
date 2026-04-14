@@ -159,6 +159,7 @@ export const pieces = [
     category: "accessories",
     subcategory: "Watches",
     imageUrl: "/images/Laurent-Ferrier_Classic-Origin-Blue_Watch_LCF036.T.CG_Front-Soldat_FixedTEMP_1000x.webp",
+    link: "https://laurentferrier.ch/collections/classic/products/classic-origin-blue",
     slug: "laurent-ferrier-classic-origin-blue",
   },
   {
@@ -225,6 +226,7 @@ export const pieces = [
       "/images/bov0261054_bei_03.webp",
       "/images/bov0261054_bei_05.webp",
     ],
+    link: "https://www.ln-cc.com/de-de/damen/taschen/handtaschen/bottega-veneta-medium-andiamo-handbag-in-ecru-bov0261054bei.html",
     slug: "bottega-veneta-medium-andiamo-ecru",
   },
   {
@@ -241,6 +243,7 @@ export const pieces = [
       "/images/ig_prd_ovw_eames_lounge_chair_and_ottoman_03.jpg",
       { src: "/images/it_prd_dtl_eames_lounge_chair_and_ottoman_07.jpg", objectFit: "contain" },
     ],
+    link: "https://www.hermanmiller.com/products/seating/lounge-seating/eames-lounge-chair-and-ottoman/",
     slug: "herman-miller-eames-lounge-chair",
   },
   {

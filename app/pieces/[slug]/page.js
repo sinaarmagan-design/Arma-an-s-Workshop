@@ -70,12 +70,14 @@ export default async function PiecePage({ params }) {
           </div>
 
           <dl className="space-y-7">
-            <div>
-              <dt className="text-[10px] font-light tracking-[0.25em] uppercase text-gray-400 mb-1.5">
-                Year
-              </dt>
-              <dd className="text-sm font-light text-gray-800">{piece.year}</dd>
-            </div>
+            {piece.year != null && (
+              <div>
+                <dt className="text-[10px] font-light tracking-[0.25em] uppercase text-gray-400 mb-1.5">
+                  Year
+                </dt>
+                <dd className="text-sm font-light text-gray-800">{piece.year}</dd>
+              </div>
+            )}
 
             <div>
               <dt className="text-[10px] font-light tracking-[0.25em] uppercase text-gray-400 mb-1.5">
@@ -88,6 +90,18 @@ export default async function PiecePage({ params }) {
               </dd>
             </div>
           </dl>
+
+          {piece.link && (
+            <a
+              href={piece.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-xs font-light tracking-[0.18em] uppercase text-gray-400 hover:text-gray-900 transition-colors duration-200"
+            >
+              <span>Shop</span>
+              <span aria-hidden="true" className="text-[10px]">↗</span>
+            </a>
+          )}
         </div>
       </div>
 
