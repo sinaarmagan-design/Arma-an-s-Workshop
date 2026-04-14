@@ -170,7 +170,7 @@ export const pieces = [
     price: 450,
     category: "accessories",
     subcategory: "Wallets",
-    imageUrl: "https://picsum.photos/seed/goyard1/800/1067",
+    imageUrl: "/images/STSULPPMLTY09CL09X_1_1_8d9e.webp",
     slug: "goyard-saint-sulpice-card-holder",
   },
   {
@@ -196,5 +196,17 @@ export const pieces = [
     subcategory: "Bracelets",
     imageUrl: "/images/Large-839821VAHUA6244_A.avif",
     slug: "bottega-veneta-curl-leather-bracelet",
+  },
+  {
+    id: 5,
+    section: "men",
+    brand: "Rolex",
+    title: "Oyster Perpetual 36 Champagne Dial",
+    year: 2024,
+    price: 8530,
+    category: "accessories",
+    subcategory: "Watches",
+    imageUrl: "/images/m126200-0002_FP.avif",
+    slug: "rolex-oyster-perpetual-36-champagne",
   },
 ];
