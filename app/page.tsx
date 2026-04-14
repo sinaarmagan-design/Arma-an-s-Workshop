@@ -11,7 +11,7 @@ export default function Home() {
     <div className="max-w-6xl mx-auto px-6">
       {/* Title */}
       <div className="pt-16 pb-12">
-        <h1 className="text-3xl font-light text-gray-900 tracking-tight">
+        <h1 className="font-playfair text-3xl font-medium text-gray-900 tracking-tight">
           The Armand Edit
         </h1>
       </div>
@@ -25,7 +25,7 @@ export default function Home() {
           <p className="text-xs font-light tracking-[0.2em] uppercase text-gray-400 mb-6">
             About
           </p>
-          <p className="text-sm font-light text-gray-600 leading-7">
+          <p className="font-lato text-sm font-light text-gray-600 leading-7">
             The Armand Edit is a personal catalogue of things worth owning —
             clothing, shoes, accessories, and more, collected and documented
             over time. Each piece is chosen with care.

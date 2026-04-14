@@ -1,27 +1,33 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
+import { Playfair_Display, Inter, Raleway, Lato } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 
-const geist = localFont({
-  src: [
-    {
-      path: "../public/fonts/geist-latin.woff2",
-      weight: "300",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/geist-latin.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/geist-latin.woff2",
-      weight: "500",
-      style: "normal",
-    },
-  ],
-  variable: "--font-geist-sans",
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--nf-playfair",
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--nf-inter",
+  weight: ["300", "400", "500"],
+  display: "swap",
+});
+
+const raleway = Raleway({
+  subsets: ["latin"],
+  variable: "--nf-raleway",
+  weight: ["300", "400", "500", "600"],
+  display: "swap",
+});
+
+const lato = Lato({
+  subsets: ["latin"],
+  variable: "--nf-lato",
+  weight: ["300", "400", "700"],
   display: "swap",
 });
 
@@ -43,7 +49,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      className={`${playfair.variable} ${inter.variable} ${raleway.variable} ${lato.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col bg-[#f5f2ee] text-gray-900">
         <Header />
         <main className="flex-1 pt-16">{children}</main>

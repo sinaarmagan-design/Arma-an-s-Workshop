@@ -27,7 +27,7 @@ export default async function SectionPage({ params }) {
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
       <div className="mb-14">
-        <h1 className="text-3xl font-light text-gray-900 tracking-tight">
+        <h1 className="font-playfair text-3xl font-medium text-gray-900 tracking-tight">
           {sectionData.label}
         </h1>
       </div>
