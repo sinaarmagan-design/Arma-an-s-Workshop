@@ -8,12 +8,12 @@
 }
 
 html {
-  background: #f5f2ee;
+  background: #f0ebe3;
   color: #111111;
 }
 
 body {
-  background: #f5f2ee;
+  background: #f0ebe3;
   color: #111111;
   font-family: var(--nf-raleway), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;

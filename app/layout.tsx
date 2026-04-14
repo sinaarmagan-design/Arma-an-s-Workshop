@@ -53,7 +53,7 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${inter.variable} ${raleway.variable} ${lato.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#f5f2ee] text-gray-900">
+      <body className="min-h-full flex flex-col bg-[#f0ebe3] text-gray-900">
         <Header />
         <main className="flex-1 pt-16">{children}</main>
       </body>
