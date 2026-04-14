@@ -230,10 +230,10 @@ export const pieces = [
     price: 6495,
     category: "furniture",
     subcategory: "Seating",
-    imageUrl: "https://picsum.photos/seed/eames1/800/800",
+    imageUrl: "/images/ig_prd_ovw_eames_lounge_chair_and_ottoman_03.jpg",
     images: [
-      "https://picsum.photos/seed/eames1/800/800",
-      "https://picsum.photos/seed/eames2/800/800",
+      "/images/ig_prd_ovw_eames_lounge_chair_and_ottoman_03.jpg",
+      "/images/it_prd_dtl_eames_lounge_chair_and_ottoman_07.jpg",
     ],
     slug: "herman-miller-eames-lounge-chair",
   },
