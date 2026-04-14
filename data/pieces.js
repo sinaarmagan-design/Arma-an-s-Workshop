@@ -4,6 +4,7 @@ export const sections = [
   { slug: "vehicles", label: "Vehicles" },
   { slug: "house", label: "House" },
   { slug: "tech", label: "Tech" },
+  { slug: "places", label: "Places" },
 ];
 
 export const categories = {
@@ -115,6 +116,34 @@ export const categories = {
       slug: "gadgets",
       label: "Gadgets",
       subcategories: ["Wearables", "Smart Home", "Phones"],
+    },
+  ],
+  places: [
+    { slug: "all", label: "All" },
+    {
+      slug: "restaurants",
+      label: "Restaurants",
+      subcategories: ["Fine Dining", "Casual", "Japanese", "Italian", "Steakhouse"],
+    },
+    {
+      slug: "bars",
+      label: "Bars",
+      subcategories: ["Cocktail", "Wine Bar", "Rooftop", "Members Club"],
+    },
+    {
+      slug: "hotels",
+      label: "Hotels",
+      subcategories: ["Luxury", "Boutique", "Resort", "City"],
+    },
+    {
+      slug: "cafes",
+      label: "Cafes",
+      subcategories: ["Specialty Coffee", "Bakery", "Brunch"],
+    },
+    {
+      slug: "other",
+      label: "Other",
+      subcategories: ["Galleries", "Shops", "Spas", "Clubs"],
     },
   ],
 };
