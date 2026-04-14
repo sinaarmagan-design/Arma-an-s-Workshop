@@ -1,6 +1,7 @@
 export const sections = [
   { slug: "men", label: "Men" },
   { slug: "women", label: "Women" },
+  { slug: "vehicles", label: "Vehicles" },
   { slug: "house", label: "House" },
   { slug: "tech", label: "Tech" },
 ];
@@ -22,11 +23,6 @@ export const categories = {
       slug: "accessories",
       label: "Accessories",
       subcategories: ["Watches", "Bracelets", "Sunglasses", "Wallets", "Bags", "Hats"],
-    },
-    {
-      slug: "vehicles",
-      label: "Vehicles",
-      subcategories: ["Cars", "Motorcycles"],
     },
   ],
   women: [
@@ -50,6 +46,24 @@ export const categories = {
       slug: "leather-goods",
       label: "Leather Goods",
       subcategories: ["Bags", "Wallets", "Belts"],
+    },
+  ],
+  vehicles: [
+    { slug: "all", label: "All" },
+    {
+      slug: "cars",
+      label: "Cars",
+      subcategories: ["Supercars", "Sports", "Saloon", "SUV", "Classic"],
+    },
+    {
+      slug: "motorcycles",
+      label: "Motorcycles",
+      subcategories: ["Sport", "Cruiser", "Adventure"],
+    },
+    {
+      slug: "other",
+      label: "Other",
+      subcategories: ["Boats", "Jets", "Bicycles"],
     },
   ],
   house: [
