@@ -51,7 +51,6 @@ export default async function PiecePage({ params }) {
         <ImageGallery
           images={piece.images ?? [piece.imageUrl]}
           alt={`${piece.brand} ${piece.title}`}
-          objectFit={piece.objectFit ?? "cover"}
         />
 
         {/* Details */}

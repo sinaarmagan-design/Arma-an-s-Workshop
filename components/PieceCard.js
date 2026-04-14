@@ -12,8 +12,12 @@ function formatPrice(price) {
   }).format(price);
 }
 
+function norm(img) {
+  return typeof img === "string" ? { src: img, objectFit: "cover" } : img;
+}
+
 export default function PieceCard({ piece }) {
-  const images = piece.images ?? [piece.imageUrl];
+  const images = (piece.images ?? [piece.imageUrl]).map(norm);
   const [idx, setIdx] = useState(0);
   const hasMultiple = images.length > 1;
 
@@ -34,10 +38,10 @@ export default function PieceCard({ piece }) {
       {/* Image container */}
       <div className="relative overflow-hidden bg-white aspect-square rounded-xl">
         <Image
-          src={images[idx]}
+          src={images[idx].src}
           alt={`${piece.brand} ${piece.title}`}
           fill
-          className={`${piece.objectFit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-700 ease-out group-hover:scale-[1.04]`}
+          className={`${images[idx].objectFit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-700 ease-out group-hover:scale-[1.04]`}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
 

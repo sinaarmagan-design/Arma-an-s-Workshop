@@ -3,17 +3,22 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 
-export default function ImageGallery({ images, alt, objectFit = "cover" }) {
+function norm(img) {
+  return typeof img === "string" ? { src: img, objectFit: "cover" } : img;
+}
+
+export default function ImageGallery({ images, alt }) {
+  const imgs = images.map(norm);
   const [current, setCurrent] = useState(0);
   const touchStart = useRef(null);
 
-  if (!images || images.length === 0) return null;
+  if (!imgs || imgs.length === 0) return null;
 
   function prev() {
     setCurrent((c) => Math.max(0, c - 1));
   }
   function next() {
-    setCurrent((c) => Math.min(images.length - 1, c + 1));
+    setCurrent((c) => Math.min(imgs.length - 1, c + 1));
   }
 
   function onTouchStart(e) {
@@ -36,19 +41,19 @@ export default function ImageGallery({ images, alt, objectFit = "cover" }) {
         onTouchEnd={onTouchEnd}
       >
         <Image
-          src={images[current]}
-          alt={`${alt} — ${current + 1} of ${images.length}`}
+          src={imgs[current].src}
+          alt={`${alt} — ${current + 1} of ${imgs.length}`}
           fill
-          className={objectFit === "contain" ? "object-contain" : "object-cover"}
+          className={imgs[current].objectFit === "contain" ? "object-contain" : "object-cover"}
           priority={current === 0}
         />
 
       </div>
 
       {/* Dot indicators */}
-      {images.length > 1 && (
+      {imgs.length > 1 && (
         <div className="flex justify-center gap-2">
-          {images.map((_, i) => (
+          {imgs.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}
