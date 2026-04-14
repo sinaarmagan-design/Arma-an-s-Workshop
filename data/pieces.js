@@ -219,6 +219,12 @@ export const pieces = [
     category: "leather-goods",
     subcategory: "Bags",
     imageUrl: "/bov0261054_bei_00.webp",
+    images: [
+      "/bov0261054_bei_00.webp",
+      "/images/bov0261054_bei_01.webp",
+      "/images/bov0261054_bei_03.webp",
+      "/images/bov0261054_bei_05.webp",
+    ],
     slug: "bottega-veneta-medium-andiamo-ecru",
   },
   {
@@ -236,5 +242,21 @@ export const pieces = [
       "/images/it_prd_dtl_eames_lounge_chair_and_ottoman_07.jpg",
     ],
     slug: "herman-miller-eames-lounge-chair",
+  },
+  {
+    id: 8,
+    section: "women",
+    brand: "Bottega Veneta",
+    title: "Small Parachute Bag Midnight",
+    year: 2024,
+    price: 4800,
+    category: "leather-goods",
+    subcategory: "Bags",
+    imageUrl: "/images/796569VCPPT4338_A.avif",
+    images: [
+      "/images/796569VCPPT4338_A.avif",
+      "/images/796569VCPPT4338_B.avif",
+    ],
+    slug: "bottega-veneta-small-parachute-midnight",
   },
 ];
