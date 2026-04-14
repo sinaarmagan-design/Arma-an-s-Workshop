@@ -39,7 +39,7 @@ export default function ImageGallery({ images, alt }) {
           src={images[current]}
           alt={`${alt} — ${current + 1} of ${images.length}`}
           fill
-          className="object-cover"
+          className="object-contain"
           priority={current === 0}
         />
 
