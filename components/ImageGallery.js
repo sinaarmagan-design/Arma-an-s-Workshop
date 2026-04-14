@@ -43,29 +43,6 @@ export default function ImageGallery({ images, alt }) {
           priority={current === 0}
         />
 
-        {/* Arrow buttons */}
-        {images.length > 1 && (
-          <>
-            {current > 0 && (
-              <button
-                onClick={prev}
-                aria-label="Previous image"
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:bg-white transition-colors duration-200 shadow-sm"
-              >
-                &#8592;
-              </button>
-            )}
-            {current < images.length - 1 && (
-              <button
-                onClick={next}
-                aria-label="Next image"
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-gray-700 hover:bg-white transition-colors duration-200 shadow-sm"
-              >
-                &#8594;
-              </button>
-            )}
-          </>
-        )}
       </div>
 
       {/* Dot indicators */}

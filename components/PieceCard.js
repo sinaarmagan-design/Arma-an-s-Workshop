@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 function formatPrice(price) {
   return new Intl.NumberFormat("en-US", {
@@ -10,19 +13,56 @@ function formatPrice(price) {
 }
 
 export default function PieceCard({ piece }) {
+  const images = piece.images ?? [piece.imageUrl];
+  const [idx, setIdx] = useState(0);
+  const hasMultiple = images.length > 1;
+
+  function prev(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    setIdx((i) => (i - 1 + images.length) % images.length);
+  }
+
+  function next(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    setIdx((i) => (i + 1) % images.length);
+  }
+
   return (
     <Link href={`/pieces/${piece.slug}`} className="group block">
       {/* Image container */}
       <div className="relative overflow-hidden bg-white aspect-square rounded-xl">
         <Image
-          src={piece.imageUrl}
+          src={images[idx]}
           alt={`${piece.brand} ${piece.title}`}
           fill
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-        {/* Subtle dark overlay on hover */}
+
+        {/* Overlay on hover */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+
+        {/* Slide arrows — bottom right, only when multiple images */}
+        {hasMultiple && (
+          <div className="absolute bottom-3 right-3 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button
+              onClick={prev}
+              aria-label="Previous image"
+              className="w-6 h-6 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center text-white text-xs hover:bg-white/50 transition-colors duration-200"
+            >
+              &#8592;
+            </button>
+            <button
+              onClick={next}
+              aria-label="Next image"
+              className="w-6 h-6 rounded-full bg-white/30 backdrop-blur-sm flex items-center justify-center text-white text-xs hover:bg-white/50 transition-colors duration-200"
+            >
+              &#8594;
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Metadata */}
