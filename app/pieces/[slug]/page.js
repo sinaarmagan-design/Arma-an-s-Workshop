@@ -3,6 +3,7 @@ import Link from "next/link";
 import { pieces } from "@/data/pieces";
 import { notFound } from "next/navigation";
 import ImageGallery from "@/components/ImageGallery";
+import PieceCard from "@/components/PieceCard";
 
 function formatPrice(price) {
   return new Intl.NumberFormat("en-US", {
@@ -34,6 +35,10 @@ export default async function PiecePage({ params }) {
   const idx = pieces.findIndex((p) => p.slug === slug);
   const prev = idx > 0 ? pieces[idx - 1] : null;
   const next = idx < pieces.length - 1 ? pieces[idx + 1] : null;
+
+  const pairedPieces = (piece.pairs ?? [])
+    .map((s) => pieces.find((p) => p.slug === s))
+    .filter(Boolean);
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-16">
@@ -104,6 +109,20 @@ export default async function PiecePage({ params }) {
           )}
         </div>
       </div>
+
+      {/* Style it with */}
+      {pairedPieces.length > 0 && (
+        <section className="mt-20 pt-10 border-t border-gray-100">
+          <p className="text-[10px] font-light tracking-[0.25em] uppercase text-gray-400 mb-10">
+            Style it with
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-12">
+            {pairedPieces.map((p) => (
+              <PieceCard key={p.id} piece={p} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Prev / Next navigation */}
       {(prev || next) && (

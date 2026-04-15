@@ -160,6 +160,10 @@ export const pieces = [
     subcategory: "Watches",
     imageUrl: "/images/Laurent-Ferrier_Classic-Origin-Blue_Watch_LCF036.T.CG_Front-Soldat_FixedTEMP_1000x.webp",
     link: "https://laurentferrier.ch/collections/classic/products/classic-origin-blue",
+    pairs: [
+      "goyard-saint-sulpice-card-holder",
+      "bottega-veneta-knot-leather-bracelet",
+    ],
     slug: "laurent-ferrier-classic-origin-blue",
   },
   {
