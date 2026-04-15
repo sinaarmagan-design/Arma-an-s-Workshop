@@ -58,6 +58,7 @@ export default async function PiecePage({ params }) {
           alt={`${piece.brand} ${piece.title}`}
           objectPosition={piece.objectPosition ?? "center"}
           objectFit={piece.objectFit}
+          imagePadding={piece.imagePadding}
         />
 
         {/* Details */}
