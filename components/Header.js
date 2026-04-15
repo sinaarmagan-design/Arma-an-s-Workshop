@@ -25,7 +25,7 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link
           href="/"
-          className="font-playfair text-base font-medium tracking-wide text-gray-900 hover:text-gray-400 transition-colors duration-300"
+          className="font-playfair text-2xl font-medium tracking-wide text-gray-900 hover:text-gray-400 transition-colors duration-300"
         >
           The Armand Edit
         </Link>
