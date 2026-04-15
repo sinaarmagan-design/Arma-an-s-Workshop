@@ -7,6 +7,7 @@ import { sections } from "@/data/pieces";
 
 const allLinks = [
   ...sections.map((s) => ({ href: `/${s.slug}`, label: s.label })),
+  { href: "/editorial", label: "Editorial" },
   { href: "/#about", label: "About" },
 ];
 
@@ -44,6 +45,16 @@ export default function Header() {
               {s.label}
             </Link>
           ))}
+          <Link
+            href="/editorial"
+            className={`text-xs font-light tracking-[0.15em] uppercase transition-colors duration-300 ${
+              pathname === "/editorial" || pathname.startsWith("/editorial/")
+                ? "text-gray-900"
+                : "text-gray-400 hover:text-gray-900"
+            }`}
+          >
+            Editorial
+          </Link>
           <Link
             href="/#about"
             className="text-xs font-light tracking-[0.15em] uppercase text-gray-400 hover:text-gray-900 transition-colors duration-300"

@@ -79,16 +79,16 @@ export default function PieceCard({ piece }) {
       </div>
 
       {/* Metadata */}
-      <div className="mt-3 transition-opacity duration-300 opacity-60 group-hover:opacity-100">
-        <p className="text-[10px] font-light text-gray-400 tracking-[0.2em] uppercase mb-1">
+      <div className="mt-2.5 transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0">
+        <p className="text-[9px] font-light text-gray-400 tracking-[0.2em] uppercase mb-0.5">
           {piece.brand}
         </p>
         <div className="flex items-baseline justify-between gap-3">
-          <p className="text-sm font-light text-gray-900 tracking-wide leading-snug">
+          <p className="text-xs font-light text-gray-900 tracking-wide leading-snug">
             {piece.title}
           </p>
           {piece.price != null && (
-            <p className="text-xs font-light text-gray-500 whitespace-nowrap shrink-0">
+            <p className="text-[11px] font-light text-gray-500 whitespace-nowrap shrink-0">
               {formatPrice(piece.price)}
             </p>
           )}
