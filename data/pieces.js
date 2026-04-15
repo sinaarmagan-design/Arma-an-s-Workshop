@@ -176,6 +176,10 @@ export const pieces = [
     category: "accessories",
     subcategory: "Wallets",
     imageUrl: "/images/STSULPPMLTY09CL09X_1_1_8d9e.webp",
+    pairs: [
+      "laurent-ferrier-classic-origin-blue",
+      "rolex-oyster-perpetual-36-champagne",
+    ],
     slug: "goyard-saint-sulpice-card-holder",
   },
   {
@@ -188,6 +192,10 @@ export const pieces = [
     category: "accessories",
     subcategory: "Bracelets",
     imageUrl: "/images/Large-796597VAHUA6356_A.avif",
+    pairs: [
+      "laurent-ferrier-classic-origin-blue",
+      "goyard-saint-sulpice-card-holder",
+    ],
     slug: "bottega-veneta-knot-leather-bracelet",
   },
   {
@@ -200,6 +208,10 @@ export const pieces = [
     category: "accessories",
     subcategory: "Bracelets",
     imageUrl: "/images/Large-839821VAHUA6244_A.avif",
+    pairs: [
+      "rolex-oyster-perpetual-36-champagne",
+      "goyard-saint-sulpice-card-holder",
+    ],
     slug: "bottega-veneta-curl-leather-bracelet",
   },
   {
@@ -212,6 +224,10 @@ export const pieces = [
     category: "accessories",
     subcategory: "Watches",
     imageUrl: "/images/m126200-0002_FP.avif",
+    pairs: [
+      "goyard-saint-sulpice-card-holder",
+      "bottega-veneta-curl-leather-bracelet",
+    ],
     slug: "rolex-oyster-perpetual-36-champagne",
   },
   {
