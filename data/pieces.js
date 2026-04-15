@@ -245,6 +245,7 @@ export const pieces = [
     category: "leather-goods",
     subcategory: "Bags",
     imageUrl: "/bov0261054_bei_00.webp",
+    objectFit: "cover",
     images: [
       "/bov0261054_bei_00.webp",
       "/images/bov0261054_bei_01.webp",
@@ -281,6 +282,7 @@ export const pieces = [
     category: "leather-goods",
     subcategory: "Bags",
     imageUrl: "/images/796569VCPPT4338_A.avif",
+    objectFit: "cover",
     images: [
       "/images/796569VCPPT4338_A.avif",
       "/images/796569VCPPT4338_B.avif",
