@@ -12,12 +12,19 @@ function formatPrice(price) {
   }).format(price);
 }
 
-function norm(img) {
-  return typeof img === "string" ? { src: img, objectFit: "cover" } : img;
+function norm(img, defaultPosition = "center") {
+  return typeof img === "string"
+    ? { src: img, objectFit: "cover", objectPosition: defaultPosition }
+    : { objectPosition: defaultPosition, ...img };
 }
 
+const posClass = (p) =>
+  ({ top: "object-top", bottom: "object-bottom", left: "object-left", right: "object-right" }[p] ?? "object-center");
+
 export default function PieceCard({ piece }) {
-  const images = (piece.images ?? [piece.imageUrl]).map(norm);
+  const images = (piece.images ?? [piece.imageUrl]).map((img) =>
+    norm(img, piece.objectPosition ?? "center")
+  );
   const [idx, setIdx] = useState(0);
   const hasMultiple = images.length > 1;
 
@@ -41,7 +48,7 @@ export default function PieceCard({ piece }) {
           src={images[idx].src}
           alt={`${piece.brand} ${piece.title}`}
           fill
-          className={`${images[idx].objectFit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-700 ease-out group-hover:scale-[1.04]`}
+          className={`${images[idx].objectFit === "contain" ? "object-contain" : "object-cover"} ${posClass(images[idx].objectPosition)} transition-transform duration-700 ease-out group-hover:scale-[1.04]`}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
 

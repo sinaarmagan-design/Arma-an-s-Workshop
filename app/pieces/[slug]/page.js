@@ -56,6 +56,7 @@ export default async function PiecePage({ params }) {
         <ImageGallery
           images={piece.images ?? [piece.imageUrl]}
           alt={`${piece.brand} ${piece.title}`}
+          objectPosition={piece.objectPosition ?? "center"}
         />
 
         {/* Details */}

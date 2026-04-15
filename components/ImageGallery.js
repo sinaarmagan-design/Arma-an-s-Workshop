@@ -3,12 +3,17 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 
-function norm(img) {
-  return typeof img === "string" ? { src: img, objectFit: "cover" } : img;
+function norm(img, defaultPosition = "center") {
+  return typeof img === "string"
+    ? { src: img, objectFit: "cover", objectPosition: defaultPosition }
+    : { objectPosition: defaultPosition, ...img };
 }
 
-export default function ImageGallery({ images, alt }) {
-  const imgs = images.map(norm);
+const posClass = (p) =>
+  ({ top: "object-top", bottom: "object-bottom", left: "object-left", right: "object-right" }[p] ?? "object-center");
+
+export default function ImageGallery({ images, alt, objectPosition = "center" }) {
+  const imgs = images.map((img) => norm(img, objectPosition));
   const [current, setCurrent] = useState(0);
   const touchStart = useRef(null);
 
@@ -44,7 +49,7 @@ export default function ImageGallery({ images, alt }) {
           src={imgs[current].src}
           alt={`${alt} — ${current + 1} of ${imgs.length}`}
           fill
-          className={imgs[current].objectFit === "contain" ? "object-contain" : "object-cover"}
+          className={`${imgs[current].objectFit === "contain" ? "object-contain" : "object-cover"} ${posClass(imgs[current].objectPosition)}`}
           priority={current === 0}
         />
 
