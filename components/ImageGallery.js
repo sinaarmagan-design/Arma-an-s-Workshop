@@ -53,7 +53,12 @@ export default function ImageGallery({ images, alt, objectPosition = "center", o
           src={imgs[current].src}
           alt={`${alt} — ${current + 1} of ${imgs.length}`}
           fill
-          style={{ backgroundColor: "white", ...(imagePadding ? { inset: imagePadding } : {}) }}
+          style={{
+            backgroundColor: "white",
+            inset: imgs[current].objectFit === "cover"
+              ? "0"
+              : (imagePadding ?? "8%"),
+          }}
           className={`${imgs[current].objectFit === "cover" ? "object-cover" : "object-contain"} ${posClass(imgs[current].objectPosition)}`}
           priority={current === 0}
         />
