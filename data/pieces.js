@@ -179,7 +179,7 @@ export const pieces = [
     pairs: [
       "laurent-ferrier-classic-origin-blue",
       "rolex-oyster-perpetual-36-champagne",
-      "rolex-datejust-36",
+      "rolex-datejust-41",
     ],
     slug: "goyard-saint-sulpice-card-holder",
   },
@@ -195,7 +195,7 @@ export const pieces = [
     imageUrl: "/images/Large-796597VAHUA6356_A.avif",
     pairs: [
       "laurent-ferrier-classic-origin-blue",
-      "rolex-datejust-36",
+      "rolex-datejust-41",
       "goyard-saint-sulpice-card-holder",
     ],
     slug: "bottega-veneta-knot-leather-bracelet",
@@ -353,7 +353,7 @@ export const pieces = [
     id: 13,
     section: "men",
     brand: "Rolex",
-    title: "Datejust 36",
+    title: "Datejust 41",
     year: 2024,
     price: 12430,
     category: "accessories",
@@ -364,6 +364,6 @@ export const pieces = [
       "goyard-saint-sulpice-card-holder",
       "bottega-veneta-knot-leather-bracelet",
     ],
-    slug: "rolex-datejust-36",
+    slug: "rolex-datejust-41",
   },
 ];
