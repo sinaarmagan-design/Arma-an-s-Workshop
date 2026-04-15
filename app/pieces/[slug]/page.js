@@ -103,10 +103,10 @@ export default async function PiecePage({ params }) {
               href={piece.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-light tracking-[0.18em] uppercase text-gray-400 hover:text-gray-900 transition-colors duration-200"
+              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#9B4E2E] hover:bg-[#7E3D22] transition-colors duration-300 text-white text-xs font-light tracking-[0.2em] uppercase"
             >
               <span>Shop</span>
-              <span aria-hidden="true" className="text-[10px]">↗</span>
+              <span aria-hidden="true" className="text-[11px] leading-none">↗</span>
             </a>
           )}
         </div>
