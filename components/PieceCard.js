@@ -14,7 +14,7 @@ function formatPrice(price) {
 
 function norm(img, defaultPosition = "center") {
   return typeof img === "string"
-    ? { src: img, objectFit: "cover", objectPosition: defaultPosition }
+    ? { src: img, objectFit: "contain", objectPosition: defaultPosition }
     : { objectPosition: defaultPosition, ...img };
 }
 
@@ -50,7 +50,7 @@ export default function PieceCard({ piece }) {
           src={images[idx].src}
           alt={`${piece.brand} ${piece.title}`}
           fill
-          className={`${images[idx].objectFit === "contain" ? "object-contain" : "object-cover"} ${posClass(images[idx].objectPosition)} transition-transform duration-700 ease-out group-hover:scale-[1.04]`}
+          className={`${images[idx].objectFit === "cover" ? "object-cover" : "object-contain"} ${posClass(images[idx].objectPosition)} transition-transform duration-700 ease-out group-hover:scale-[1.04]`}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
 

@@ -5,7 +5,7 @@ import Image from "next/image";
 
 function norm(img, defaultPosition = "center") {
   return typeof img === "string"
-    ? { src: img, objectFit: "cover", objectPosition: defaultPosition }
+    ? { src: img, objectFit: "contain", objectPosition: defaultPosition }
     : { objectPosition: defaultPosition, ...img };
 }
 
@@ -53,7 +53,7 @@ export default function ImageGallery({ images, alt, objectPosition = "center", o
           src={imgs[current].src}
           alt={`${alt} — ${current + 1} of ${imgs.length}`}
           fill
-          className={`${imgs[current].objectFit === "contain" ? "object-contain" : "object-cover"} ${posClass(imgs[current].objectPosition)}`}
+          className={`${imgs[current].objectFit === "cover" ? "object-cover" : "object-contain"} ${posClass(imgs[current].objectPosition)}`}
           priority={current === 0}
         />
 
