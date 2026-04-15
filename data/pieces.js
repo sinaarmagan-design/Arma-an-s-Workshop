@@ -179,6 +179,7 @@ export const pieces = [
     pairs: [
       "laurent-ferrier-classic-origin-blue",
       "rolex-oyster-perpetual-36-champagne",
+      "rolex-datejust-36",
     ],
     slug: "goyard-saint-sulpice-card-holder",
   },
@@ -194,6 +195,7 @@ export const pieces = [
     imageUrl: "/images/Large-796597VAHUA6356_A.avif",
     pairs: [
       "laurent-ferrier-classic-origin-blue",
+      "rolex-datejust-36",
       "goyard-saint-sulpice-card-holder",
     ],
     slug: "bottega-veneta-knot-leather-bracelet",
@@ -346,5 +348,22 @@ export const pieces = [
     ],
     link: "https://sg.louisvuitton.com/eng-sg/products/carryall-east-west-monogram-nvprod7300028v/M28101",
     slug: "louis-vuitton-carryall-east-west",
+  },
+  {
+    id: 13,
+    section: "men",
+    brand: "Rolex",
+    title: "Datejust 36",
+    year: 2024,
+    price: 12430,
+    category: "accessories",
+    subcategory: "Watches",
+    imageUrl: "/images/m126334-0014.avif",
+    link: "https://www.rolex.com/en-sg/watches/datejust/m126334-0014",
+    pairs: [
+      "goyard-saint-sulpice-card-holder",
+      "bottega-veneta-knot-leather-bracelet",
+    ],
+    slug: "rolex-datejust-36",
   },
 ];
