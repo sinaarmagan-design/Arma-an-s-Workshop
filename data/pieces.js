@@ -180,6 +180,7 @@ export const pieces = [
       "laurent-ferrier-classic-origin-blue",
       "rolex-oyster-perpetual-36-champagne",
       "rolex-datejust-41",
+      "omega-seamaster-diver-300m",
     ],
     slug: "goyard-saint-sulpice-card-holder",
   },
@@ -214,6 +215,7 @@ export const pieces = [
     objectFit: "cover",
     pairs: [
       "rolex-oyster-perpetual-36-champagne",
+      "omega-seamaster-diver-300m",
       "goyard-saint-sulpice-card-holder",
     ],
     slug: "bottega-veneta-curl-leather-bracelet",
@@ -393,5 +395,22 @@ export const pieces = [
     imageUrl: "/images/60006476_ER_MAIN1X1.webp",
     link: "https://www.tiffany.com/jewelry/earrings/platinum-round-brilliant-diamonds-earrings-1521152949.html",
     slug: "tiffany-platinum-round-brilliant-earrings",
+  },
+  {
+    id: 16,
+    section: "men",
+    brand: "Omega",
+    title: "Seamaster Diver 300M",
+    year: 2024,
+    price: 10800,
+    category: "accessories",
+    subcategory: "Watches",
+    imageUrl: "/images/omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21090422001001-ba176b.png",
+    link: "https://www.omegawatches.com/watch-omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21090422001001",
+    pairs: [
+      "goyard-saint-sulpice-card-holder",
+      "bottega-veneta-curl-leather-bracelet",
+    ],
+    slug: "omega-seamaster-diver-300m",
   },
 ];
