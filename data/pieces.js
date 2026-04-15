@@ -310,10 +310,10 @@ export const pieces = [
   },
   {
     id: 12,
-    section: "men",
+    section: "women",
     brand: "Louis Vuitton",
     title: "Carryall East West",
-    category: "accessories",
+    category: "leather-goods",
     subcategory: "Bags",
     imageUrl: "/images/louis-vuitton-carryall-east-west--M28101_PM2_Front view.avif",
     images: [
