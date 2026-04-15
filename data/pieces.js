@@ -406,7 +406,6 @@ export const pieces = [
     category: "accessories",
     subcategory: "Watches",
     imageUrl: "/images/omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21090422001001-ba176b.png",
-    imagePadding: "10%",
     link: "https://www.omegawatches.com/watch-omega-seamaster-diver-300m-co-axial-master-chronometer-42-mm-21090422001001",
     pairs: [
       "goyard-saint-sulpice-card-holder",
