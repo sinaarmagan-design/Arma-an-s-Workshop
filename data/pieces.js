@@ -193,6 +193,7 @@ export const pieces = [
     category: "accessories",
     subcategory: "Bracelets",
     imageUrl: "/images/Large-796597VAHUA6356_A.avif",
+    objectFit: "cover",
     pairs: [
       "laurent-ferrier-classic-origin-blue",
       "rolex-datejust-41",
@@ -210,6 +211,7 @@ export const pieces = [
     category: "accessories",
     subcategory: "Bracelets",
     imageUrl: "/images/Large-839821VAHUA6244_A.avif",
+    objectFit: "cover",
     pairs: [
       "rolex-oyster-perpetual-36-champagne",
       "goyard-saint-sulpice-card-holder",
