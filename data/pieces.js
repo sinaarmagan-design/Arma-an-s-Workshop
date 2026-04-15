@@ -265,6 +265,7 @@ export const pieces = [
     category: "furniture",
     subcategory: "Seating",
     imageUrl: "/images/ig_prd_ovw_eames_lounge_chair_and_ottoman_03.jpg",
+    objectFit: "cover",
     images: [
       "/images/ig_prd_ovw_eames_lounge_chair_and_ottoman_03.jpg",
       { src: "/images/it_prd_dtl_eames_lounge_chair_and_ottoman_07.jpg", objectFit: "contain" },
