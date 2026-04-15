@@ -11,7 +11,7 @@ export default function Home() {
     <div className="max-w-6xl mx-auto px-6">
       {/* Title */}
       <div className="pt-16 pb-12">
-        <h1 className="font-playfair text-3xl font-medium text-gray-900 tracking-tight">
+        <h1 className="font-playfair text-5xl sm:text-6xl font-medium text-gray-900 tracking-tight">
           The Armand Edit
         </h1>
       </div>
