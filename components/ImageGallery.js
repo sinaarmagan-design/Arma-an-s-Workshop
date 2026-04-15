@@ -10,7 +10,7 @@ function norm(img, defaultPosition = "center") {
 }
 
 const posClass = (p) =>
-  ({ top: "object-top", bottom: "object-bottom", left: "object-left", right: "object-right" }[p] ?? "object-center");
+  ({ top: "object-top", bottom: "object-bottom", left: "object-left", right: "object-right" }[p] ?? "");
 
 export default function ImageGallery({ images, alt, objectPosition = "center", objectFit }) {
   const imgs = images.map((img) => {

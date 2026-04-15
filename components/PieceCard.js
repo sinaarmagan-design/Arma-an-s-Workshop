@@ -19,7 +19,7 @@ function norm(img, defaultPosition = "center") {
 }
 
 const posClass = (p) =>
-  ({ top: "object-top", bottom: "object-bottom", left: "object-left", right: "object-right" }[p] ?? "object-center");
+  ({ top: "object-top", bottom: "object-bottom", left: "object-left", right: "object-right" }[p] ?? "");
 
 export default function PieceCard({ piece }) {
   const images = (piece.images ?? [piece.imageUrl]).map((img) => {
