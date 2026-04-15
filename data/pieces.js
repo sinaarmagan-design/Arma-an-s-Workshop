@@ -225,7 +225,7 @@ export const pieces = [
     price: 8530,
     category: "accessories",
     subcategory: "Watches",
-    imageUrl: "/images/m126200-0002_FP.avif",
+    imageUrl: "/images/m126000-0001.avif",
     link: "https://www.rolex.com/en-sg/watches/oyster-perpetual/m126200-0002",
     pairs: [
       "goyard-saint-sulpice-card-holder",
