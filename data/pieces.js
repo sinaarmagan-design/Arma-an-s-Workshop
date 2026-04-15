@@ -359,7 +359,6 @@ export const pieces = [
     category: "accessories",
     subcategory: "Watches",
     imageUrl: "/images/m126334-0014.avif",
-    objectFit: "contain",
     link: "https://www.rolex.com/en-sg/watches/datejust/m126334-0014",
     pairs: [
       "goyard-saint-sulpice-card-holder",
