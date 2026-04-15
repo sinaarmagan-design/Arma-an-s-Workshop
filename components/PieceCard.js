@@ -50,7 +50,7 @@ export default function PieceCard({ piece }) {
           src={images[idx].src}
           alt={`${piece.brand} ${piece.title}`}
           fill
-          style={piece.imagePadding ? { inset: piece.imagePadding } : undefined}
+          style={{ backgroundColor: "white", ...(piece.imagePadding ? { inset: piece.imagePadding } : {}) }}
           className={`${images[idx].objectFit === "cover" ? "object-cover" : "object-contain"} ${posClass(images[idx].objectPosition)} transition-transform duration-700 ease-out group-hover:scale-[1.04]`}
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
