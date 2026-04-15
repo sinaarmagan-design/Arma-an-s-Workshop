@@ -226,6 +226,7 @@ export const pieces = [
     category: "accessories",
     subcategory: "Watches",
     imageUrl: "/images/m126200-0002_FP.avif",
+    link: "https://www.rolex.com/en-sg/watches/oyster-perpetual/m126200-0002",
     pairs: [
       "goyard-saint-sulpice-card-holder",
       "bottega-veneta-curl-leather-bracelet",
