@@ -22,9 +22,11 @@ const posClass = (p) =>
   ({ top: "object-top", bottom: "object-bottom", left: "object-left", right: "object-right" }[p] ?? "object-center");
 
 export default function PieceCard({ piece }) {
-  const images = (piece.images ?? [piece.imageUrl]).map((img) =>
-    norm(img, piece.objectPosition ?? "center")
-  );
+  const images = (piece.images ?? [piece.imageUrl]).map((img) => {
+    const n = norm(img, piece.objectPosition ?? "center");
+    if (piece.objectFit && !img.objectFit) n.objectFit = piece.objectFit;
+    return n;
+  });
   const [idx, setIdx] = useState(0);
   const hasMultiple = images.length > 1;
 

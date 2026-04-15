@@ -12,8 +12,12 @@ function norm(img, defaultPosition = "center") {
 const posClass = (p) =>
   ({ top: "object-top", bottom: "object-bottom", left: "object-left", right: "object-right" }[p] ?? "object-center");
 
-export default function ImageGallery({ images, alt, objectPosition = "center" }) {
-  const imgs = images.map((img) => norm(img, objectPosition));
+export default function ImageGallery({ images, alt, objectPosition = "center", objectFit }) {
+  const imgs = images.map((img) => {
+    const n = norm(img, objectPosition);
+    if (objectFit && !img.objectFit) n.objectFit = objectFit;
+    return n;
+  });
   const [current, setCurrent] = useState(0);
   const touchStart = useRef(null);
 
