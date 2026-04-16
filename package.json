@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "remove-bg": "node scripts/remove-bg.js"
   },
   "dependencies": {
+    "@imgly/background-removal-node": "^1.4.5",
     "next": "16.2.3",
     "react": "19.2.4",
     "react-dom": "19.2.4"
