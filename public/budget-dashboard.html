@@ -1039,9 +1039,8 @@ function updField(catKey, encodedRoom, id, field, value) {
   const item = (state[catKey].items[room] || []).find(i => i.id === id);
   if (!item) return;
   item[field] = value;
-  if (field === 'payType' && value === 'upfront') {
-    item.months = 1;
-    // payType change needs structural re-render (enables/disables months input)
+  if (field === 'payType') {
+    if (value === 'upfront') item.months = 1;
     renderAll();
     return;
   }
