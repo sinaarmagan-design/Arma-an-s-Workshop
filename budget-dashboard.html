@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bütçe Takibi</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f3ef;
+    --surface: #ffffff;
+    --surface2: #f0ede8;
+    --border: #e2ded7;
+    --border2: #ccc8c0;
+    --text: #1a1916;
+    --text2: #6b6760;
+    --text3: #a09d98;
+    --blue: #2563EB;
+    --blue-bg: #EFF6FF;
+    --blue-text: #1D4ED8;
+    --green: #16A34A;
+    --green-bg: #F0FDF4;
+    --green-text: #15803D;
+    --amber: #D97706;
+    --amber-bg: #FFFBEB;
+    --amber-text: #B45309;
+    --red: #DC2626;
+    --red-bg: #FEF2F2;
+    --red-text: #B91C1C;
+    --gray-bg: #F9FAFB;
+    --gray-text: #6B7280;
+    --furniture: #2563EB;
+    --furniture-bg: #EFF6FF;
+    --house: #16A34A;
+    --house-bg: #F0FDF4;
+    --wedding: #BE185D;
+    --wedding-bg: #FDF2F8;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .app {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px;
+  }
+
+  .app-header {
+    margin-bottom: 28px;
+  }
+
+  .app-header h1 {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.3px;
+    color: var(--text);
+  }
+
+  .app-header p {
+    font-size: 13px;
+    color: var(--text3);
+    margin-top: 2px;
+  }
+
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .metric {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+  }
+
+  .metric-label {
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .metric-value {
+    font-size: 20px;
+    font-weight: 500;
+    font-family: 'DM Mono', monospace;
+    color: var(--text);
+  }
+
+  .metric-value.green { color: var(--green); }
+  .metric-value.amber { color: var(--amber); }
+  .metric-value.blue  { color: var(--blue); }
+  .metric-value.red   { color: var(--red); }
+
+  .metric-sub {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 3px;
+  }
+
+  /* Progress bar */
+  .progress-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text2);
+    margin-bottom: 8px;
+  }
+
+  .progress-outer {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-inner {
+    height: 100%;
+    background: var(--green);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+
+  /* Color bar */
+  .color-bar-wrap { margin-bottom: 24px; }
+
+  .color-bar {
+    display: flex;
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .color-seg { height: 100%; transition: width 0.4s; }
+
+  .color-legend {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  /* Category block */
+  .cat-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .cat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+  }
+
+  .cat-header:hover { background: var(--surface2); }
+
+  .cat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cat-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+
+  .cat-name {
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  .cat-room-count {
+    font-size: 12px;
+    color: var(--text3);
+    font-weight: 400;
+  }
+
+  .cat-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .cat-total {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .badge-green { background: var(--green-bg); color: var(--green-text); }
+  .badge-blue  { background: var(--blue-bg);  color: var(--blue-text); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber-text); }
+  .badge-gray  { background: var(--gray-bg);  color: var(--gray-text); }
+  .badge-red   { background: var(--red-bg);   color: var(--red-text); }
+
+  .chevron {
+    color: var(--text3);
+    font-size: 16px;
+    transition: transform 0.2s;
+    line-height: 1;
+  }
+
+  .chevron.open { transform: rotate(180deg); }
+
+  .cat-body { border-top: 1px solid var(--border); }
+
+  /* Room block */
+  .room-block {
+    border-bottom: 1px solid var(--border);
+    padding: 0 18px 12px;
+  }
+
+  .room-block:last-of-type { border-bottom: none; }
+
+  .room-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0 8px;
+    gap: 8px;
+  }
+
+  .room-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .room-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .room-total {
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text3);
+  }
+
+  .icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text3);
+    padding: 3px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .icon-btn:hover { color: var(--red); background: var(--red-bg); }
+
+  /* Table */
+  .items-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .items-table th {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0 6px 6px;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .items-table th.r { text-align: right; }
+  .items-table th.c { text-align: center; }
+
+  .items-table td {
+    padding: 4px 6px;
+    border-top: 1px solid var(--border);
+  }
+
+  .items-table tr.paid-row td {
+    opacity: 0.45;
+  }
+
+  .items-table tr.partial-row td {
+    /* no special treatment, just normal */
+  }
+
+  .cell-input {
+    background: transparent;
+    border: none;
+    font-size: 13px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    width: 100%;
+    outline: none;
+    padding: 3px 4px;
+    border-radius: 4px;
+  }
+
+  .cell-input:focus { background: var(--surface2); }
+  .cell-input::placeholder { color: var(--text3); }
+  .cell-input.r { text-align: right; font-family: 'DM Mono', monospace; }
+  .cell-input:disabled { color: var(--text3); cursor: default; }
+
+  .cell-select {
+    background: transparent;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    padding: 3px 5px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .cell-select:focus { outline: none; border-color: var(--border2); }
+
+  /* Paid status cell */
+  .paid-status-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: flex-end;
+  }
+
+  .paid-row-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    justify-content: flex-end;
+  }
+
+  .paid-amount-input {
+    width: 80px;
+    background: var(--green-bg);
+    border: 1px solid #bbf7d0;
+    border-radius: var(--radius);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--green-text);
+    padding: 3px 6px;
+    text-align: right;
+    outline: none;
+  }
+
+  .paid-amount-input:focus { border-color: var(--green); }
+
+  .paid-label {
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  /* Taksit info */
+  .taksit-info {
+    font-size: 11px;
+    color: var(--blue-text);
+    font-family: 'DM Mono', monospace;
+    white-space: nowrap;
+  }
+
+  /* Add row button */
+  .add-row-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text3);
+    padding: 6px 4px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .add-row-btn:hover { color: var(--text); }
+
+  /* Cat footer */
+  .cat-footer {
+    padding: 10px 18px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .add-room-btn {
+    background: transparent;
+    border: 1px dashed var(--border2);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text2);
+    padding: 5px 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .add-room-btn:hover { border-color: var(--text2); color: var(--text); }
+
+  /* Schedule section */
+  .schedule-section {
+    margin-top: 24px;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .schedule-table th {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 10px 14px;
+    text-align: left;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .schedule-table th.r { text-align: right; }
+
+  .schedule-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .schedule-table tr:last-child td { border-bottom: none; }
+
+  .schedule-table tr.sched-paid td { opacity: 0.4; }
+
+  .schedule-table td.r {
+    text-align: right;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .cat-pill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .item-name-cell { max-width: 180px; }
+
+  .item-name-main {
+    font-size: 13px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .item-name-sub {
+    font-size: 11px;
+    color: var(--text3);
+  }
+
+  .progress-mini-outer {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 4px;
+    width: 80px;
+  }
+
+  .progress-mini-inner {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s;
+  }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    width: 320px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  }
+
+  .modal h3 { font-size: 15px; font-weight: 500; margin-bottom: 14px; }
+
+  .modal-input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    margin-bottom: 14px;
+  }
+
+  .modal-input:focus { border-color: var(--border2); }
+
+  .modal-btns {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .btn {
+    padding: 7px 16px;
+    border-radius: var(--radius);
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text2);
+  }
+
+  .btn:hover { background: var(--surface2); }
+
+  .btn-primary {
+    background: var(--text);
+    color: var(--surface);
+    border-color: var(--text);
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  /* Tooltip for partial */
+  .partial-badge {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 1px 6px;
+    border-radius: 20px;
+    background: var(--amber-bg);
+    color: var(--amber-text);
+    white-space: nowrap;
+  }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .app { padding: 16px 12px; }
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .items-table th:nth-child(5),
+    .items-table td:nth-child(5) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="app-header" style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div>
+      <h1>Bütçe takibi</h1>
+      <p>Ev, mobilya ve düğün harcamalarını takip et</p>
+    </div>
+    <button id="shareBtn" onclick="shareLink()" style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text2);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;margin-top:4px">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      <span id="shareBtnLabel">Linki kopyala</span>
+    </button>
+  </div>
+
+  <div class="summary-grid" id="summaryGrid"></div>
+
+  <div class="progress-card" id="progressCard" style="display:none">
+    <div class="progress-labels">
+      <span id="progressLabel">Ödeme ilerlemesi</span>
+      <span id="progressPct">%0</span>
+    </div>
+    <div class="progress-outer">
+      <div class="progress-inner" id="progressInner" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="color-bar-wrap">
+    <div class="color-bar" id="colorBar"></div>
+    <div class="color-legend" id="colorLegend"></div>
+  </div>
+
+  <div id="catsWrap"></div>
+
+  <div class="schedule-section" id="scheduleSection" style="display:none">
+    <div class="section-title">Ödeme planı</div>
+    <div id="scheduleContent"></div>
+  </div>
+</div>
+
+<!-- Add Room Modal -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>Yeni oda ekle</h3>
+    <input class="modal-input" id="modalInput" placeholder="Oda adı (örn: Çocuk odası)" />
+    <div class="modal-btns">
+      <button class="btn" onclick="closeModal()">İptal</button>
+      <button class="btn btn-primary" onclick="confirmAddRoom()">Ekle</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CATS = [
+  { key: 'furniture', label: 'Mobilya', icon: '🛋', color: '#2563EB', bg: '#EFF6FF', bar: '#2563EB' },
+  { key: 'house',     label: 'Ev',      icon: '🏠', color: '#16A34A', bg: '#F0FDF4', bar: '#16A34A' },
+  { key: 'wedding',   label: 'Düğün',   icon: '💍', color: '#BE185D', bg: '#FDF2F8', bar: '#BE185D' },
+];
+
+function uid() { return Math.random().toString(36).slice(2, 9); }
+function newItem() { return { id: uid(), name: '', amount: '', payType: 'upfront', months: 1, paidAmount: '' }; }
+
+const state = {
+  furniture: {
+    rooms: ['Mutfak', 'Salon', 'Yatak odası', 'Banyo'],
+    items: {
+      'Mutfak':      [newItem()],
+      'Salon':       [newItem()],
+      'Yatak odası': [newItem()],
+      'Banyo':       [newItem()],
+    }
+  },
+  house: {
+    rooms: ['Genel'],
+    items: {
+      'Genel': [
+        { id: uid(), name: 'Peşinat', amount: '', payType: 'upfront', months: 1, paidAmount: '' },
+        { id: uid(), name: 'Aylık taksit', amount: '', payType: 'installment', months: 120, paidAmount: '' },
+      ]
+    }
+  },
+  wedding: {
+    rooms: ['Genel'],
+    items: { 'Genel': [newItem()] }
+  }
+};
+
+const collapsed = { furniture: false, house: false, wedding: false };
+let modalTarget = null;
+
+function pa(v) { const n = parseFloat(String(v || '').replace(/[^\d.]/g, '')); return isNaN(n) ? 0 : n; }
+function fmt(n) { return '₺' + Math.round(n).toLocaleString('tr-TR'); }
+
+function allItems(key) {
+  return state[key].rooms.flatMap(r => state[key].items[r] || []);
+}
+
+function catTotal(key) { return allItems(key).reduce((s, i) => s + pa(i.amount), 0); }
+function catPaid(key)  { return allItems(key).reduce((s, i) => s + pa(i.paidAmount), 0); }
+function catRemaining(key) { return catTotal(key) - catPaid(key); }
+
+function grandTotal()     { return CATS.reduce((s, c) => s + catTotal(c.key), 0); }
+function grandPaid()      { return CATS.reduce((s, c) => s + catPaid(c.key), 0); }
+function grandRemaining() { return grandTotal() - grandPaid(); }
+function grandMonthly() {
+  return CATS.reduce((s, c) =>
+    s + allItems(c.key)
+      .filter(i => i.payType === 'installment' && pa(i.amount) > pa(i.paidAmount))
+      .reduce((ss, i) => ss + pa(i.amount) / (parseInt(i.months) || 1), 0)
+  , 0);
+}
+
+function renderAll() {
+  renderSummary();
+  renderBar();
+  renderCats();
+  renderSchedule();
+  scheduleSave();
+}
+
+function renderSummary() {
+  const gt = grandTotal(), gp = grandPaid(), gr = grandRemaining(), gm = grandMonthly();
+  document.getElementById('summaryGrid').innerHTML = `
+    <div class="metric"><div class="metric-label">Toplam bütçe</div><div class="metric-value">${gt ? fmt(gt) : '—'}</div></div>
+    <div class="metric"><div class="metric-label">Ödenen</div><div class="metric-value green">${gp ? fmt(gp) : '—'}</div></div>
+    <div class="metric"><div class="metric-label">Kalan</div><div class="metric-value amber">${gr ? fmt(gr) : '—'}</div></div>
+    <div class="metric"><div class="metric-label">Aylık taksit</div><div class="metric-value blue">${gm ? fmt(Math.round(gm)) + '/ay' : '—'}</div></div>
+  `;
+  const pc = document.getElementById('progressCard');
+  if (gt > 0) {
+    pc.style.display = '';
+    const pct = Math.round(gp / gt * 100);
+    document.getElementById('progressLabel').textContent = `${fmt(gp)} ödendi / ${fmt(gt)} toplam`;
+    document.getElementById('progressPct').textContent = `%${pct}`;
+    document.getElementById('progressInner').style.width = pct + '%';
+  } else {
+    pc.style.display = 'none';
+  }
+}
+
+function renderBar() {
+  const gt = grandTotal();
+  document.getElementById('colorBar').innerHTML = CATS.map(c => {
+    const pct = gt > 0 ? (catTotal(c.key) / gt * 100).toFixed(1) : (100 / CATS.length).toFixed(1);
+    return `<div class="color-seg" style="background:${c.bar};width:${pct}%"></div>`;
+  }).join('');
+  document.getElementById('colorLegend').innerHTML = CATS.map(c =>
+    `<span><span class="legend-dot" style="background:${c.bar}"></span>${c.label}${catTotal(c.key) ? ' · ' + fmt(catTotal(c.key)) : ''}</span>`
+  ).join('');
+}
+
+function renderCats() {
+  const wrap = document.getElementById('catsWrap');
+  wrap.innerHTML = '';
+  CATS.forEach(cat => {
+    const s = state[cat.key];
+    const ct = catTotal(cat.key);
+    const cp = catPaid(cat.key);
+    const col = collapsed[cat.key];
+
+    const div = document.createElement('div');
+    div.className = 'cat-block';
+    div.id = 'cat-' + cat.key;
+
+    const paidBadge = cp > 0 ? `<span class="badge badge-green">${fmt(cp)} ödendi</span>` : '';
+
+    let bodyHtml = '';
+    if (!col) {
+      bodyHtml = `<div class="cat-body">`;
+      s.rooms.forEach(room => {
+        const items = s.items[room] || [];
+        const rt = items.reduce((sum, i) => sum + pa(i.amount), 0);
+        const rp = items.reduce((sum, i) => sum + pa(i.paidAmount), 0);
+
+        bodyHtml += `<div class="room-block" id="room-${cat.key}-${encodeRoomId(room)}">
+          <div class="room-header">
+            <span class="room-title">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              ${room}
+            </span>
+            <div class="room-actions">
+              ${rt ? `<span class="room-total">${fmt(rt)}${rp ? ' · ' + fmt(rp) + ' ödendi' : ''}</span>` : ''}
+              ${s.rooms.length > 1 ? `<button class="icon-btn" onclick="deleteRoom('${cat.key}','${encodeRoomId(room)}')" title="Odayı sil">✕</button>` : ''}
+            </div>
+          </div>
+          <table class="items-table">
+            <thead><tr>
+              <th style="width:30%">Açıklama</th>
+              <th class="r" style="width:13%">Tutar</th>
+              <th style="width:13%">Tip</th>
+              <th class="r" style="width:9%">Ay</th>
+              <th class="r" style="width:13%">Aylık</th>
+              <th class="r" style="width:15%">Ödenen</th>
+              <th style="width:7%"></th>
+            </tr></thead>
+            <tbody id="tbody-${cat.key}-${encodeRoomId(room)}">
+              ${items.map(item => renderItemRow(cat.key, room, item)).join('')}
+            </tbody>
+          </table>
+          <button class="add-row-btn" onclick="addItem('${cat.key}','${encodeRoomId(room)}')">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Kalem ekle
+          </button>
+        </div>`;
+      });
+      bodyHtml += `<div class="cat-footer">
+        <button class="add-room-btn" onclick="openModal('${cat.key}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Oda ekle
+        </button>
+      </div>`;
+      bodyHtml += `</div>`;
+    }
+
+    div.innerHTML = `
+      <div class="cat-header" onclick="toggleCat('${cat.key}')">
+        <div class="cat-header-left">
+          <div class="cat-icon" style="background:${cat.bg};font-size:16px">${cat.icon}</div>
+          <span class="cat-name">${cat.label}</span>
+          <span class="cat-room-count">${s.rooms.length} oda</span>
+        </div>
+        <div class="cat-header-right">
+          ${ct ? `<span class="cat-total" style="color:${cat.color}">${fmt(ct)}</span>` : ''}
+          ${paidBadge}
+          <span class="chevron ${col ? '' : 'open'}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </div>
+      </div>
+      ${bodyHtml}
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+function renderItemRow(catKey, room, item) {
+  const amt = pa(item.amount);
+  const paidAmt = pa(item.paidAmount);
+  const months = parseInt(item.months) || 1;
+  const monthly = item.payType === 'installment' && amt > 0 ? amt / months : 0;
+  const isFullPaid = paidAmt > 0 && paidAmt >= amt;
+  const isPartial = paidAmt > 0 && paidAmt < amt;
+  const pct = amt > 0 ? Math.min(100, Math.round(paidAmt / amt * 100)) : 0;
+
+  const rowClass = isFullPaid ? 'paid-row' : isPartial ? 'partial-row' : '';
+  const encodedRoom = encodeRoomId(room);
+
+  return `<tr class="${rowClass}" id="row-${item.id}">
+    <td><input class="cell-input" value="${esc(item.name)}" placeholder="Açıklama…" oninput="updField('${catKey}','${encodedRoom}','${item.id}','name',this.value)"/></td>
+    <td><input class="cell-input r" value="${item.amount}" placeholder="0" type="number" oninput="updField('${catKey}','${encodedRoom}','${item.id}','amount',this.value)"/></td>
+    <td>
+      <select class="cell-select" onchange="updField('${catKey}','${encodedRoom}','${item.id}','payType',this.value)">
+        <option value="upfront"${item.payType==='upfront'?' selected':''}>Peşin</option>
+        <option value="installment"${item.payType==='installment'?' selected':''}>Taksit</option>
+      </select>
+    </td>
+    <td><input class="cell-input r" value="${item.months}" type="number" min="1" placeholder="1"${item.payType==='upfront'?' disabled':''} oninput="updField('${catKey}','${encodedRoom}','${item.id}','months',this.value)"/></td>
+    <td style="text-align:right">
+      ${monthly > 0 ? `<span class="taksit-info">${fmt(Math.round(monthly))}</span>` : '<span style="color:var(--text3)">—</span>'}
+    </td>
+    <td>
+      <div class="paid-status-cell">
+        <div class="paid-row-wrapper">
+          <span class="paid-label">₺</span>
+          <input class="paid-amount-input" value="${item.paidAmount}" type="number" min="0" placeholder="0" oninput="updField('${catKey}','${encodedRoom}','${item.id}','paidAmount',this.value)" title="Ödenen tutar"/>
+        </div>
+        ${amt > 0 && paidAmt > 0 ? `
+          <div class="mini-progress-wrap">
+            <div class="progress-mini-outer">
+              <div class="progress-mini-inner" style="width:${pct}%;background:${isFullPaid?'#16A34A':'#D97706'}"></div>
+            </div>
+            <span style="font-size:10px;color:${isFullPaid?'var(--green-text)':'var(--amber-text)'}">%${pct}${isFullPaid?' ✓':''}</span>
+          </div>
+        ` : ''}
+      </div>
+    </td>
+    <td><button class="icon-btn" onclick="delItem('${catKey}','${encodedRoom}','${item.id}')" title="Sil">✕</button></td>
+  </tr>`;
+}
+
+function renderSchedule() {
+  const sec = document.getElementById('scheduleSection');
+  const content = document.getElementById('scheduleContent');
+
+  const upfronts = [], installments = [];
+
+  CATS.forEach(cat => {
+    state[cat.key].rooms.forEach(room => {
+      (state[cat.key].items[room] || []).forEach(item => {
+        const amt = pa(item.amount);
+        if (!amt) return;
+        const paid = pa(item.paidAmount);
+        const isFullPaid = paid >= amt;
+        const pct = Math.min(100, Math.round(paid / amt * 100));
+
+        if (item.payType === 'installment') {
+          const months = parseInt(item.months) || 1;
+          const monthly = amt / months;
+          installments.push({ cat, room, item, amt, paid, pct, isFullPaid, months, monthly });
+        } else {
+          upfronts.push({ cat, room, item, amt, paid, pct, isFullPaid });
+        }
+      });
+    });
+  });
+
+  if (!upfronts.length && !installments.length) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+
+  let html = '';
+
+  if (upfronts.length) {
+    html += `<p style="font-size:12px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Peşin ödemeler</p>
+    <table class="schedule-table" style="margin-bottom:16px">
+      <thead><tr>
+        <th>Kategori</th><th>Kalem</th><th>Oda</th>
+        <th class="r">Toplam</th><th class="r">Ödenen</th><th class="r">Kalan</th><th>Durum</th>
+      </tr></thead>
+      <tbody>
+    `;
+    upfronts.forEach(({ cat, room, item, amt, paid, pct, isFullPaid }) => {
+      const remaining = amt - paid;
+      html += `<tr class="${isFullPaid ? 'sched-paid' : ''}">
+        <td><span class="cat-pill" style="background:${cat.bg};color:${cat.color}">${cat.label}</span></td>
+        <td class="item-name-cell"><div class="item-name-main">${esc(item.name) || '—'}</div></td>
+        <td style="color:var(--text3);font-size:12px">${room}</td>
+        <td class="r">${fmt(amt)}</td>
+        <td class="r" style="color:var(--green)">${paid ? fmt(paid) : '—'}</td>
+        <td class="r" style="color:${remaining > 0 ? 'var(--amber)' : 'var(--green)'}">${remaining > 0 ? fmt(remaining) : '✓'}</td>
+        <td>
+          ${isFullPaid
+            ? `<span class="badge badge-green">Ödendi</span>`
+            : paid > 0
+              ? `<span class="partial-badge">%${pct} ödendi</span>`
+              : `<span class="badge badge-gray">Bekliyor</span>`
+          }
+        </td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+  }
+
+  if (installments.length) {
+    html += `<p style="font-size:12px;color:var(--text2);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Taksitli ödemeler</p>
+    <table class="schedule-table">
+      <thead><tr>
+        <th>Kategori</th><th>Kalem</th><th>Oda</th>
+        <th class="r">Aylık</th><th class="r">Süre</th><th class="r">Toplam</th><th class="r">Ödenen</th><th>Durum</th>
+      </tr></thead>
+      <tbody>
+    `;
+    installments.forEach(({ cat, room, item, amt, paid, pct, isFullPaid, months, monthly }) => {
+      html += `<tr class="${isFullPaid ? 'sched-paid' : ''}">
+        <td><span class="cat-pill" style="background:${cat.bg};color:${cat.color}">${cat.label}</span></td>
+        <td class="item-name-cell">
+          <div class="item-name-main">${esc(item.name) || '—'}</div>
+          <div class="item-name-sub">${fmt(amt)} toplam</div>
+        </td>
+        <td style="color:var(--text3);font-size:12px">${room}</td>
+        <td class="r" style="font-weight:500">${fmt(Math.round(monthly))}</td>
+        <td class="r">${months} ay</td>
+        <td class="r">${fmt(amt)}</td>
+        <td class="r" style="color:var(--green)">${paid ? fmt(paid) : '—'}</td>
+        <td>
+          ${isFullPaid
+            ? `<span class="badge badge-green">Ödendi</span>`
+            : paid > 0
+              ? `<span class="partial-badge">%${pct}</span>`
+              : `<span class="badge badge-blue">Aktif</span>`
+          }
+        </td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+  }
+
+  content.innerHTML = html;
+}
+
+// State mutations
+function updField(catKey, encodedRoom, id, field, value) {
+  const room = decodeRoomId(encodedRoom);
+  const item = (state[catKey].items[room] || []).find(i => i.id === id);
+  if (!item) return;
+  item[field] = value;
+  if (field === 'payType' && value === 'upfront') {
+    item.months = 1;
+    // payType change needs structural re-render (enables/disables months input)
+    renderAll();
+    return;
+  }
+  // For plain value fields (amount, months, paidAmount, name) only update
+  // derived displays — never rebuild the input DOM so focus is preserved
+  if (field === 'amount' || field === 'months' || field === 'paidAmount') {
+    updateRowDerived(catKey, room, id);
+    renderSummary();
+    renderBar();
+    renderSchedule();
+    updateCatHeader(catKey);
+  }
+  // name changes need no derived recalc
+}
+
+// Update only the computed cells in a row without rebuilding inputs
+function updateRowDerived(catKey, room, id) {
+  const item = (state[catKey].items[room] || []).find(i => i.id === id);
+  if (!item) return;
+  const row = document.getElementById('row-' + id);
+  if (!row) return;
+
+  const amt = pa(item.amount);
+  const paidAmt = pa(item.paidAmount);
+  const months = parseInt(item.months) || 1;
+  const monthly = item.payType === 'installment' && amt > 0 ? amt / months : 0;
+  const isFullPaid = paidAmt > 0 && amt > 0 && paidAmt >= amt;
+  const isPartial = paidAmt > 0 && amt > 0 && paidAmt < amt;
+  const pct = amt > 0 ? Math.min(100, Math.round(paidAmt / amt * 100)) : 0;
+
+  // Row class
+  row.className = isFullPaid ? 'paid-row' : isPartial ? 'partial-row' : '';
+
+  // Monthly cell (td index 4)
+  const cells = row.querySelectorAll('td');
+  if (cells[4]) {
+    cells[4].innerHTML = monthly > 0
+      ? `<span class="taksit-info">${fmt(Math.round(monthly))}</span>`
+      : `<span style="color:var(--text3)">—</span>`;
+  }
+
+  // Progress mini under paid input (td index 5)
+  if (cells[5]) {
+    const existing = cells[5].querySelector('.mini-progress-wrap');
+    if (existing) existing.remove();
+    if (amt > 0 && paidAmt > 0) {
+      const wrap = document.createElement('div');
+      wrap.className = 'mini-progress-wrap';
+      wrap.innerHTML = `
+        <div class="progress-mini-outer">
+          <div class="progress-mini-inner" style="width:${pct}%;background:${isFullPaid ? '#16A34A' : '#D97706'}"></div>
+        </div>
+        <span style="font-size:10px;color:${isFullPaid ? 'var(--green-text)' : 'var(--amber-text)'}">%${pct}${isFullPaid ? ' ✓' : ''}</span>`;
+      cells[5].querySelector('.paid-status-cell').appendChild(wrap);
+    }
+  }
+}
+
+// Update just the header totals of one category
+function updateCatHeader(catKey) {
+  const cat = CATS.find(c => c.key === catKey);
+  if (!cat) return;
+  const block = document.getElementById('cat-' + catKey);
+  if (!block) return;
+  const ct = catTotal(catKey);
+  const cp = catPaid(catKey);
+  const rightEl = block.querySelector('.cat-header-right');
+  if (!rightEl) return;
+  const chevron = rightEl.querySelector('.chevron');
+  const chevronHTML = chevron ? chevron.outerHTML : '';
+  rightEl.innerHTML =
+    (ct ? `<span class="cat-total" style="color:${cat.color}">${fmt(ct)}</span>` : '') +
+    (cp ? `<span class="badge badge-green">${fmt(cp)} ödendi</span>` : '') +
+    chevronHTML;
+}
+
+function addItem(catKey, encodedRoom) {
+  const room = decodeRoomId(encodedRoom);
+  if (!state[catKey].items[room]) state[catKey].items[room] = [];
+  state[catKey].items[room].push(newItem());
+  renderAll();
+}
+
+function delItem(catKey, encodedRoom, id) {
+  const room = decodeRoomId(encodedRoom);
+  state[catKey].items[room] = (state[catKey].items[room] || []).filter(i => i.id !== id);
+  renderAll();
+}
+
+function deleteRoom(catKey, encodedRoom) {
+  const room = decodeRoomId(encodedRoom);
+  if (state[catKey].rooms.length <= 1) return;
+  if (!confirm(`"${room}" odasını silmek istediğinizden emin misiniz?`)) return;
+  state[catKey].rooms = state[catKey].rooms.filter(r => r !== room);
+  delete state[catKey].items[room];
+  renderAll();
+}
+
+function toggleCat(key) {
+  collapsed[key] = !collapsed[key];
+  renderAll();
+}
+
+// Modal
+function openModal(catKey) {
+  modalTarget = catKey;
+  document.getElementById('modalInput').value = '';
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('modalInput').focus(), 50);
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  modalTarget = null;
+}
+
+function confirmAddRoom() {
+  const name = document.getElementById('modalInput').value.trim();
+  if (!name || !modalTarget) return;
+  const catKey = modalTarget;
+  if (state[catKey].rooms.includes(name)) {
+    alert('Bu isimde bir oda zaten var.');
+    return;
+  }
+  state[catKey].rooms.push(name);
+  state[catKey].items[name] = [newItem()];
+  closeModal();
+  renderAll();
+}
+
+document.getElementById('modalInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') confirmAddRoom();
+  if (e.key === 'Escape') closeModal();
+});
+
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+
+function encodeRoomId(room) { return encodeURIComponent(room); }
+function decodeRoomId(encoded) { return decodeURIComponent(encoded); }
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── URL state persistence ──────────────────────────────────────────────────
+
+let saveTimer = null;
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveToUrl, 800);
+}
+
+function serializeState() {
+  const compact = {};
+  CATS.forEach(c => {
+    compact[c.key] = { rooms: state[c.key].rooms, items: {} };
+    state[c.key].rooms.forEach(room => {
+      compact[c.key].items[room] = (state[c.key].items[room] || []).map(i => ({
+        n: i.name, a: i.amount,
+        p: i.payType === 'installment' ? 'i' : 'u',
+        m: i.months, pa: i.paidAmount
+      }));
+    });
+  });
+  try {
+    const json = JSON.stringify(compact);
+    return btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,
+      (_, p1) => String.fromCharCode('0x' + p1)));
+  } catch(e) { return null; }
+}
+
+function deserializeState(encoded) {
+  try {
+    const json = decodeURIComponent(Array.from(atob(encoded),
+      c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')).join(''));
+    const compact = JSON.parse(json);
+    CATS.forEach(c => {
+      if (!compact[c.key]) return;
+      state[c.key].rooms = compact[c.key].rooms || state[c.key].rooms;
+      state[c.key].items = {};
+      state[c.key].rooms.forEach(room => {
+        const raw = (compact[c.key].items || {})[room] || [];
+        state[c.key].items[room] = raw.map(i => ({
+          id: uid(),
+          name: i.n || '', amount: i.a || '',
+          payType: i.p === 'i' ? 'installment' : 'upfront',
+          months: i.m || 1, paidAmount: i.pa || ''
+        }));
+        if (state[c.key].items[room].length === 0) state[c.key].items[room] = [newItem()];
+      });
+    });
+    return true;
+  } catch(e) { console.warn('State load failed:', e); return false; }
+}
+
+function saveToUrl() {
+  const encoded = serializeState();
+  if (encoded) {
+    window.history.replaceState(null, '',
+      window.location.pathname + window.location.search + '#' + encoded);
+  }
+}
+
+// Save on name input too (doesn't go through renderAll)
+document.addEventListener('input', e => {
+  if (e.target.matches('.cell-input')) scheduleSave();
+});
+
+function shareLink() {
+  saveToUrl();
+  const url = window.location.href;
+  const lbl = document.getElementById('shareBtnLabel');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(() => {
+      lbl.textContent = 'Kopyalandı ✓';
+      setTimeout(() => lbl.textContent = 'Linki kopyala', 2000);
+    }).catch(() => fallbackCopy(url, lbl));
+  } else {
+    fallbackCopy(url, lbl);
+  }
+}
+
+function fallbackCopy(url, lbl) {
+  const ta = document.createElement('textarea');
+  ta.value = url;
+  ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
+  lbl.textContent = 'Kopyalandı ✓';
+  setTimeout(() => lbl.textContent = 'Linki kopyala', 2000);
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────────
+
+const hash = window.location.hash.slice(1);
+if (hash) deserializeState(hash);
+renderAll();
+</script>
+</body>
+</html>
