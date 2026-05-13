@@ -1277,17 +1277,28 @@ document.addEventListener('input', e => {
 
 // ── Cloud sharing via JSONbin.io ───────────────────────────────────────────
 
-const JSONBIN_KEY = ''; // unused — kept for reference
+const JSONBIN_API = 'https://api.jsonbin.io/v3/b';
+const VERCEL_BASE = 'https://budget-dashboard-dacf.vercel.app/budget-dashboard.html';
 
-function stateToHash() {
-  try {
-    const json = JSON.stringify(serializeState());
-    // UTF-8 safe base64
-    return btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,
-      (_, p1) => String.fromCharCode(parseInt(p1, 16))));
-  } catch(e) { return null; }
+async function saveToCloud() {
+  const res = await fetch(JSONBIN_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Bin-Private': 'false' },
+    body: JSON.stringify(serializeState())
+  });
+  if (!res.ok) throw new Error('Sunucu hatası: ' + res.status);
+  const data = await res.json();
+  return data.metadata.id;
 }
 
+async function loadFromCloud(binId) {
+  const res = await fetch(`${JSONBIN_API}/${binId}/latest`);
+  if (!res.ok) throw new Error('Yükleme hatası: ' + res.status);
+  const data = await res.json();
+  return data.record;
+}
+
+// Kept for backward compat with old hash-based links
 function hashToState(hash) {
   try {
     const json = decodeURIComponent(
@@ -1297,28 +1308,27 @@ function hashToState(hash) {
   } catch(e) { return null; }
 }
 
-function shareLink() {
-  const hash = stateToHash();
-  if (!hash) { alert('Veri kodlanamadı.'); return; }
-
-  // Always use the Vercel hosted URL as the base so shared links work on any device
-  const VERCEL_BASE = 'https://budget-dashboard-dacf.vercel.app/budget-dashboard.html';
-  const base = window.location.hostname === 'localhost' || window.location.protocol === 'file:'
-    ? VERCEL_BASE
-    : window.location.href.split('#')[0].split('?')[0];
-  const shareUrl = base + '#' + hash;
-
-  // Update current tab's URL
-  window.history.replaceState(null, '', '#' + hash);
-
-  // Show share modal with the full URL
-  document.getElementById('shareUrlInput').value = shareUrl;
-  document.getElementById('shareModal').classList.add('open');
-  setTimeout(() => {
-    const inp = document.getElementById('shareUrlInput');
-    inp.select();
-    inp.setSelectionRange(0, 99999);
-  }, 50);
+async function shareLink() {
+  const lbl = document.getElementById('shareBtnLabel');
+  lbl.textContent = 'Kaydediliyor…';
+  try {
+    const binId = await saveToCloud();
+    const base = window.location.hostname === 'localhost' || window.location.protocol === 'file:'
+      ? VERCEL_BASE
+      : window.location.href.split('?')[0].split('#')[0];
+    const shareUrl = base + '?bin=' + binId;
+    document.getElementById('shareUrlInput').value = shareUrl;
+    document.getElementById('shareModal').classList.add('open');
+    setTimeout(() => {
+      const inp = document.getElementById('shareUrlInput');
+      inp.select();
+      inp.setSelectionRange(0, 99999);
+    }, 50);
+  } catch(e) {
+    alert('Kayıt başarısız oldu: ' + e.message);
+  } finally {
+    lbl.textContent = 'Paylaş';
+  }
 }
 
 function closeShareModal() {
@@ -1351,15 +1361,25 @@ function fallbackCopy(url, lbl) {
 
 // ── Boot ──────────────────────────────────────────────────────────────────
 
-function boot() {
-  // Priority 1: URL hash (shared link)
+async function boot() {
+  // Priority 1: ?bin= param (cloud-stored state)
+  const params = new URLSearchParams(window.location.search);
+  const binId = params.get('bin');
+  if (binId) {
+    try {
+      const data = await loadFromCloud(binId);
+      if (data) { deserializeState(data); renderAll(); return; }
+    } catch(e) { console.warn('Cloud load failed, falling back:', e); }
+  }
+
+  // Priority 2: URL hash (backward compat with old shared links)
   const hash = window.location.hash.slice(1);
   if (hash) {
     const data = hashToState(hash);
     if (data) { deserializeState(data); renderAll(); return; }
   }
 
-  // Priority 2: localStorage autosave
+  // Priority 3: localStorage autosave
   try {
     const saved = localStorage.getItem('budget_autosave');
     if (saved) deserializeState(JSON.parse(saved));
@@ -1374,7 +1394,7 @@ boot();
 <div class="modal-overlay" id="shareModal" onclick="if(event.target===this)closeShareModal()">
   <div class="modal" style="width:480px;max-width:95vw">
     <h3 style="margin-bottom:6px">Paylaşım linki</h3>
-    <p style="font-size:12px;color:var(--text3);margin-bottom:14px">Bu linki kopyalayıp Eylül'e gönder. Herhangi bir tarayıcıda açılabilir — kurulum gerekmez.</p>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:14px">Veriler bulutta kaydedildi. Bu linki kopyalayıp Eylül'e gönder — herhangi bir tarayıcıda açılabilir.</p>
     <div style="display:flex;gap:8px;margin-bottom:14px">
       <input id="shareUrlInput" readonly
         style="flex:1;border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text2);background:var(--bg);outline:none;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
@@ -1383,7 +1403,7 @@ boot();
         <span id="copyShareLbl">Kopyala</span>
       </button>
     </div>
-    <p style="font-size:11px;color:var(--text3);margin-bottom:14px">💡 Link tüm verileri içeriyor. Güncelleme yapınca tekrar <b>Paylaş</b>'a bas ve yeni linki gönder.</p>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:14px">💡 Her paylaşımda yeni bir link oluşturulur. Güncelleme yapınca tekrar <b>Paylaş</b>'a bas ve yeni linki gönder.</p>
     <div class="modal-btns">
       <button class="btn" onclick="closeShareModal()">Kapat</button>
     </div>
