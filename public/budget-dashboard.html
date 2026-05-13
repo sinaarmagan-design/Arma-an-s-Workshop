@@ -1369,6 +1369,9 @@ function fallbackCopy(url, lbl) {
 // ── Boot ──────────────────────────────────────────────────────────────────
 
 async function boot() {
+  // Render immediately so the page isn't blank while cloud fetch is in progress
+  renderAll();
+
   // Priority 1: ?bin= param (cloud-stored state)
   const params = new URLSearchParams(window.location.search);
   const binId = params.get('bin');
@@ -1389,10 +1392,8 @@ async function boot() {
   // Priority 3: localStorage autosave
   try {
     const saved = localStorage.getItem('budget_autosave');
-    if (saved) deserializeState(JSON.parse(saved));
+    if (saved) { deserializeState(JSON.parse(saved)); renderAll(); }
   } catch(e) {}
-
-  renderAll();
 }
 
 boot();
