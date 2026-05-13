@@ -1081,8 +1081,6 @@ function updField(catKey, encodedRoom, id, field, value) {
     renderAll();
     return;
   }
-  // For plain value fields (amount, months, paidAmount, name) only update
-  // derived displays — never rebuild the input DOM so focus is preserved
   if (field === 'amount' || field === 'months' || field === 'paidAmount') {
     updateRowDerived(catKey, room, id);
     renderSummary();
@@ -1090,10 +1088,8 @@ function updField(catKey, encodedRoom, id, field, value) {
     renderSchedule();
     updateCatHeader(catKey);
   }
-  // name changes need no derived recalc
 }
 
-// Update only the computed cells in a row without rebuilding inputs
 function updateRowDerived(catKey, room, id) {
   const item = (state[catKey].items[room] || []).find(i => i.id === id);
   if (!item) return;
@@ -1108,10 +1104,8 @@ function updateRowDerived(catKey, room, id) {
   const isPartial = paidAmt > 0 && amt > 0 && paidAmt < amt;
   const pct = amt > 0 ? Math.min(100, Math.round(paidAmt / amt * 100)) : 0;
 
-  // Row class
   row.className = isFullPaid ? 'paid-row' : isPartial ? 'partial-row' : '';
 
-  // Monthly cell (td index 4)
   const cells = row.querySelectorAll('td');
   if (cells[4]) {
     cells[4].innerHTML = monthly > 0
@@ -1119,7 +1113,6 @@ function updateRowDerived(catKey, room, id) {
       : `<span style="color:var(--text3)">—</span>`;
   }
 
-  // Progress mini under paid input (td index 5)
   if (cells[5]) {
     const existing = cells[5].querySelector('.mini-progress-wrap');
     if (existing) existing.remove();
@@ -1136,7 +1129,6 @@ function updateRowDerived(catKey, room, id) {
   }
 }
 
-// Update just the header totals of one category
 function updateCatHeader(catKey) {
   const cat = CATS.find(c => c.key === catKey);
   if (!cat) return;
@@ -1181,7 +1173,6 @@ function toggleCat(key) {
   renderAll();
 }
 
-// Modal
 function openModal(catKey) {
   modalTarget = catKey;
   document.getElementById('modalInput').value = '';
@@ -1278,12 +1269,17 @@ document.addEventListener('input', e => {
 // ── Cloud sharing via JSONbin.io ───────────────────────────────────────────
 
 const JSONBIN_API = 'https://api.jsonbin.io/v3/b';
+const JSONBIN_KEY = '$2a$10$PlIBzRQx271AaMoaomj5TeLhClKV2UzWnYy.0vtIOn19dePtTqdG6';
 const VERCEL_BASE = 'https://budget-dashboard-dacf.vercel.app/budget-dashboard.html';
 
 async function saveToCloud() {
   const res = await fetch(JSONBIN_API, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Bin-Private': 'false' },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Master-Key': JSONBIN_KEY,
+      'X-Bin-Private': 'false'
+    },
     body: JSON.stringify(serializeState())
   });
   if (!res.ok) throw new Error('Sunucu hatası: ' + res.status);
@@ -1292,13 +1288,14 @@ async function saveToCloud() {
 }
 
 async function loadFromCloud(binId) {
-  const res = await fetch(`${JSONBIN_API}/${binId}/latest`);
+  const res = await fetch(`${JSONBIN_API}/${binId}/latest`, {
+    headers: { 'X-Master-Key': JSONBIN_KEY }
+  });
   if (!res.ok) throw new Error('Yükleme hatası: ' + res.status);
   const data = await res.json();
   return data.record;
 }
 
-// Kept for backward compat with old hash-based links
 function hashToState(hash) {
   try {
     const json = decodeURIComponent(
@@ -1362,7 +1359,6 @@ function fallbackCopy(url, lbl) {
 // ── Boot ──────────────────────────────────────────────────────────────────
 
 async function boot() {
-  // Priority 1: ?bin= param (cloud-stored state)
   const params = new URLSearchParams(window.location.search);
   const binId = params.get('bin');
   if (binId) {
@@ -1372,14 +1368,12 @@ async function boot() {
     } catch(e) { console.warn('Cloud load failed, falling back:', e); }
   }
 
-  // Priority 2: URL hash (backward compat with old shared links)
   const hash = window.location.hash.slice(1);
   if (hash) {
     const data = hashToState(hash);
     if (data) { deserializeState(data); renderAll(); return; }
   }
 
-  // Priority 3: localStorage autosave
   try {
     const saved = localStorage.getItem('budget_autosave');
     if (saved) deserializeState(JSON.parse(saved));
