@@ -665,7 +665,7 @@
     </div>
     <button id="shareBtn" onclick="shareLink()" style="display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);color:var(--text2);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;flex-shrink:0;margin-top:4px">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      <span id="shareBtnLabel">Linki kopyala</span>
+      <span id="shareBtnLabel">Paylaş</span>
     </button>
   </div>
 
@@ -716,28 +716,66 @@ const CATS = [
 function uid() { return Math.random().toString(36).slice(2, 9); }
 function newItem() { return { id: uid(), name: '', amount: '', payType: 'upfront', months: 1, paidAmount: '' }; }
 
+function makeItem(n, a, p, m, pa) {
+  return { id: uid(), name: n, amount: a, payType: p === 'i' ? 'installment' : 'upfront', months: m, paidAmount: pa };
+}
+
 const state = {
   furniture: {
     rooms: ['Mutfak', 'Salon', 'Yatak odası', 'Banyo'],
     items: {
-      'Mutfak':      [newItem()],
-      'Salon':       [newItem()],
-      'Yatak odası': [newItem()],
-      'Banyo':       [newItem()],
+      'Mutfak': [
+        makeItem('Bıçak Seti',   '23000',  'u', 1, ''),
+        makeItem('Tava Seti',    '',        'u', 1, ''),
+        makeItem('şarap dolabı', '100000', 'u', 1, ''),
+        makeItem('soda makinesi','17000',  'u', 1, ''),
+      ],
+      'Salon': [
+        makeItem('Sofa',               '300000', 'u', 1, ''),
+        makeItem('Halı',               '',       'u', 1, ''),
+        makeItem('Işık / Lamba',       '',       'u', 1, ''),
+        makeItem('TV + Ses Sistemi',   '350000', 'u', 1, ''),
+        makeItem('Hoparlör',           '60000',  'u', 1, ''),
+        makeItem('TV Ünitesi',         '100000', 'u', 1, ''),
+        makeItem('Sehpa',              '80000',  'u', 1, ''),
+        makeItem('Kitaplık',           '250000', 'u', 1, ''),
+        makeItem('eames lounge chair', '540000', 'u', 1, ''),
+      ],
+      'Yatak odası': [
+        makeItem('Yatak',             '200000', 'u', 1, ''),
+        makeItem('Karyola',           '180000', 'u', 1, ''),
+        makeItem('Samsung Ütü Dolabı','80000',  'u', 1, ''),
+        makeItem('Giysi Dolabı',      '',       'u', 1, ''),
+        makeItem('Işık Lamba',        '',       'u', 1, ''),
+      ],
+      'Banyo': [
+        makeItem('', '', 'u', 1, ''),
+      ],
     }
   },
   house: {
     rooms: ['Genel'],
     items: {
       'Genel': [
-        { id: uid(), name: 'Peşinat', amount: '', payType: 'upfront', months: 1, paidAmount: '' },
-        { id: uid(), name: 'Aylık taksit', amount: '', payType: 'installment', months: 120, paidAmount: '' },
+        makeItem('Peşinat',      '17000000', 'u', 1,   ''),
+        makeItem('Aylık taksit', '2000000',  'i', 120, ''),
       ]
     }
   },
   wedding: {
     rooms: ['Genel'],
-    items: { 'Genel': [newItem()] }
+    items: {
+      'Genel': [
+        makeItem('Venue',          '507000', 'u', 1, ''),
+        makeItem('Yemek',          '448000', 'u', 1, ''),
+        makeItem('Stay',           '150000', 'u', 1, ''),
+        makeItem('Travel - Uçak',  '',       'u', 1, ''),
+        makeItem('Travel - Araba', '',       'u', 1, ''),
+        makeItem('Honeymoon',      '400000', 'u', 1, ''),
+        makeItem('Hediye',         '380000', 'u', 1, ''),
+        makeItem('Hediye 2',       '85000',  'u', 1, ''),
+      ]
+    }
   }
 };
 
@@ -771,7 +809,6 @@ function renderAll() {
   renderBar();
   renderCats();
   renderSchedule();
-  scheduleSave();
 }
 
 function renderSummary() {
@@ -1186,13 +1223,7 @@ function encodeRoomId(room) { return encodeURIComponent(room); }
 function decodeRoomId(encoded) { return decodeURIComponent(encoded); }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-// ── URL state persistence ──────────────────────────────────────────────────
-
-let saveTimer = null;
-function scheduleSave() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(saveToUrl, 800);
-}
+// ── State serialization ────────────────────────────────────────────────────
 
 function serializeState() {
   const compact = {};
@@ -1206,18 +1237,11 @@ function serializeState() {
       }));
     });
   });
-  try {
-    const json = JSON.stringify(compact);
-    return btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,
-      (_, p1) => String.fromCharCode('0x' + p1)));
-  } catch(e) { return null; }
+  return compact;
 }
 
-function deserializeState(encoded) {
+function deserializeState(compact) {
   try {
-    const json = decodeURIComponent(Array.from(atob(encoded),
-      c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')).join(''));
-    const compact = JSON.parse(json);
     CATS.forEach(c => {
       if (!compact[c.key]) return;
       state[c.key].rooms = compact[c.key].rooms || state[c.key].rooms;
@@ -1237,27 +1261,77 @@ function deserializeState(encoded) {
   } catch(e) { console.warn('State load failed:', e); return false; }
 }
 
-function saveToUrl() {
-  const encoded = serializeState();
-  if (encoded) {
-    window.history.replaceState(null, '',
-      window.location.pathname + window.location.search + '#' + encoded);
-  }
+// ── Auto-save to localStorage (local backup) ───────────────────────────────
+
+let saveTimer = null;
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    try { localStorage.setItem('budget_autosave', JSON.stringify(serializeState())); } catch(e) {}
+  }, 800);
 }
 
-// Save on name input too (doesn't go through renderAll)
 document.addEventListener('input', e => {
-  if (e.target.matches('.cell-input')) scheduleSave();
+  if (e.target.matches('.cell-input, .paid-amount-input')) scheduleSave();
 });
 
+// ── Cloud sharing via JSONbin.io ───────────────────────────────────────────
+
+const JSONBIN_KEY = ''; // unused — kept for reference
+
+function stateToHash() {
+  try {
+    const json = JSON.stringify(serializeState());
+    // UTF-8 safe base64
+    return btoa(encodeURIComponent(json).replace(/%([0-9A-F]{2})/g,
+      (_, p1) => String.fromCharCode(parseInt(p1, 16))));
+  } catch(e) { return null; }
+}
+
+function hashToState(hash) {
+  try {
+    const json = decodeURIComponent(
+      Array.from(atob(hash), c => '%' + c.charCodeAt(0).toString(16).padStart(2,'0')).join('')
+    );
+    return JSON.parse(json);
+  } catch(e) { return null; }
+}
+
 function shareLink() {
-  saveToUrl();
-  const url = window.location.href;
-  const lbl = document.getElementById('shareBtnLabel');
+  const hash = stateToHash();
+  if (!hash) { alert('Veri kodlanamadı.'); return; }
+
+  // Always use the Vercel hosted URL as the base so shared links work on any device
+  const VERCEL_BASE = 'https://budget-dashboard-dacf.vercel.app/budget-dashboard.html';
+  const base = window.location.hostname === 'localhost' || window.location.protocol === 'file:'
+    ? VERCEL_BASE
+    : window.location.href.split('#')[0].split('?')[0];
+  const shareUrl = base + '#' + hash;
+
+  // Update current tab's URL
+  window.history.replaceState(null, '', '#' + hash);
+
+  // Show share modal with the full URL
+  document.getElementById('shareUrlInput').value = shareUrl;
+  document.getElementById('shareModal').classList.add('open');
+  setTimeout(() => {
+    const inp = document.getElementById('shareUrlInput');
+    inp.select();
+    inp.setSelectionRange(0, 99999);
+  }, 50);
+}
+
+function closeShareModal() {
+  document.getElementById('shareModal').classList.remove('open');
+}
+
+function copyShareUrl() {
+  const url = document.getElementById('shareUrlInput').value;
+  const lbl = document.getElementById('copyShareLbl');
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(url).then(() => {
       lbl.textContent = 'Kopyalandı ✓';
-      setTimeout(() => lbl.textContent = 'Linki kopyala', 2000);
+      setTimeout(() => lbl.textContent = 'Kopyala', 2000);
     }).catch(() => fallbackCopy(url, lbl));
   } else {
     fallbackCopy(url, lbl);
@@ -1272,16 +1346,49 @@ function fallbackCopy(url, lbl) {
   ta.select();
   try { document.execCommand('copy'); } catch(e) {}
   document.body.removeChild(ta);
-  lbl.textContent = 'Kopyalandı ✓';
-  setTimeout(() => lbl.textContent = 'Linki kopyala', 2000);
+  if (lbl) { lbl.textContent = 'Kopyalandı ✓'; setTimeout(() => lbl.textContent = 'Kopyala', 2000); }
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────
 
-const DEFAULT_STATE = 'eyJmdXJuaXR1cmUiOnsicm9vbXMiOlsiTXV0ZmFrIiwiU2Fsb24iLCJZYXRhayBvZGFzxLEiLCJCYW55byJdLCJpdGVtcyI6eyJNdXRmYWsiOlt7Im4iOiJCxLHDp2FrIFNldGkiLCJhIjoiIiwicCI6InUiLCJtIjoxLCJwYSI6IiJ9LHsibiI6IlRhdmEgU2V0aSIsImEiOiIiLCJwIjoidSIsIm0iOjEsInBhIjoiIn1dLCJTYWxvbiI6W3sibiI6IlNvZmEiLCJhIjoiIiwicCI6InUiLCJtIjoxLCJwYSI6IiJ9LHsibiI6IkVhbWVzIExvdW5nZSIsImEiOiIiLCJwIjoidSIsIm0iOjEsInBhIjoiIn0seyJuIjoiSGFsxLEiLCJhIjoiIiwicCI6InUiLCJtIjoxLCJwYSI6IiJ9LHsibiI6IknFn8SxayAvIExhbWJhIiwiYSI6IiIsInAiOiJ1IiwibSI6MSwicGEiOiIifSx7Im4iOiJUViArIFNlcyBTaXN0ZW1pIiwiYSI6IiIsInAiOiJ1IiwibSI6MSwicGEiOiIifSx7Im4iOiJIb3BhcmzDtnIiLCJhIjoiIiwicCI6InUiLCJtIjoxLCJwYSI6IiJ9LHsibiI6IlRWIMOcbml0ZXNpIiwiYSI6IiIsInAiOiJ1IiwibSI6MSwicGEiOiIifSx7Im4iOiJTZWhwYSIsImEiOiIiLCJwIjoidSIsIm0iOjEsInBhIjoiIn0seyJuIjoiS2l0YXBsxLFrIiwiYSI6IiIsInAiOiJ1IiwibSI6MSwicGEiOiIifV0sIllhdGFrIG9kYXPEsSI6W3sibiI6IllhdGFrIiwiYSI6IiIsInAiOiJ1IiwibSI6MSwicGEiOiIifSx7Im4iOiJLYXJ5b2xhIiwiYSI6IiIsInAiOiJ1IiwibSI6MSwicGEiOiIifSx7Im4iOiJTYW1zdW5nIMOcdMO8IERvbGFixLEiLCJhIjoiIiwicCI6InUiLCJtIjoxLCJwYSI6IiJ9LHsibiI6IkdpeXNpIERvbGFixLEiLCJhIjoiIiwicCI6InUiLCJtIjoxLCJwYSI6IiJ9LHsibiI6IknFn8SxayBMYW1iYSIsImEiOiIiLCJwIjoidSIsIm0iOjEsInBhIjoiIn1dLCJCYW55byI6W3sibiI6IiIsImEiOiIiLCJwIjoidSIsIm0iOjEsInBhIjoiIn1dfX0sImhvdXNlIjp7InJvb21zIjpbIkdlbmVsIl0sIml0ZW1zIjp7IkdlbmVsIjpbeyJuIjoiUGXFn2luYXQiLCJhIjoiMTcwMDAwMDAiLCJwIjoidSIsIm0iOjEsInBhIjoiIn0seyJuIjoiQXlsxLFrIHRha3NpdCIsImEiOiIiLCJwIjoiaSIsIm0iOjEyMCwicGEiOiIifV19fSwid2VkZGluZyI6eyJyb29tcyI6WyJHZW5lbCJdLCJpdGVtcyI6eyJHZW5lbCI6W3sibiI6IlZlbnVlIiwiYSI6IjUwNzAwMCIsInAiOiJ1IiwibSI6MSwicGEiOiIifSx7Im4iOiJZZW1layIsImEiOiI0NDgwMDAiLCJwIjoidSIsIm0iOjEsInBhIjoiIn0seyJuIjoiU3RheSIsImEiOiIxNTAwMDAiLCJwIjoidSIsIm0iOjEsInBhIjoiIn0seyJuIjoiVHJhdmVsIC0gVcOnYWsiLCJhIjoiIiwicCI6InUiLCJtIjoxLCJwYSI6IiJ9LHsibiI6IlRyYXZlbCAtIEFyYWJhIiwiYSI6IiIsInAiOiJ1IiwibSI6MSwicGEiOiIifSx7Im4iOiJIb25leW1vb24iLCJhIjoiNDAwMDAwIiwicCI6InUiLCJtIjoxLCJwYSI6IiJ9LHsibiI6IkhlZGl5ZSIsImEiOiIzODAwMDAiLCJwIjoidSIsIm0iOjEsInBhIjoiIn0seyJuIjoiSGVkaXllIDIiLCJhIjoiODUwMDAiLCJwIjoidSIsIm0iOjEsInBhIjoiIn1dfX19';
-const hash = window.location.hash.slice(1);
-deserializeState(hash || DEFAULT_STATE);
-renderAll();
+function boot() {
+  // Priority 1: URL hash (shared link)
+  const hash = window.location.hash.slice(1);
+  if (hash) {
+    const data = hashToState(hash);
+    if (data) { deserializeState(data); renderAll(); return; }
+  }
+
+  // Priority 2: localStorage autosave
+  try {
+    const saved = localStorage.getItem('budget_autosave');
+    if (saved) deserializeState(JSON.parse(saved));
+  } catch(e) {}
+
+  renderAll();
+}
+
+boot();
 </script>
+<!-- Share Modal -->
+<div class="modal-overlay" id="shareModal" onclick="if(event.target===this)closeShareModal()">
+  <div class="modal" style="width:480px;max-width:95vw">
+    <h3 style="margin-bottom:6px">Paylaşım linki</h3>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:14px">Bu linki kopyalayıp Eylül'e gönder. Herhangi bir tarayıcıda açılabilir — kurulum gerekmez.</p>
+    <div style="display:flex;gap:8px;margin-bottom:14px">
+      <input id="shareUrlInput" readonly
+        style="flex:1;border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;font-size:12px;font-family:'DM Mono',monospace;color:var(--text2);background:var(--bg);outline:none;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"
+        onclick="this.select()" />
+      <button class="btn btn-primary" onclick="copyShareUrl()" style="flex-shrink:0">
+        <span id="copyShareLbl">Kopyala</span>
+      </button>
+    </div>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:14px">💡 Link tüm verileri içeriyor. Güncelleme yapınca tekrar <b>Paylaş</b>'a bas ve yeni linki gönder.</p>
+    <div class="modal-btns">
+      <button class="btn" onclick="closeShareModal()">Kapat</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
