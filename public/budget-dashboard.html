@@ -1085,10 +1085,11 @@ function updField(catKey, encodedRoom, id, field, value) {
   // derived displays — never rebuild the input DOM so focus is preserved
   if (field === 'amount' || field === 'months' || field === 'paidAmount') {
     updateRowDerived(catKey, room, id);
+    updateRoomHeader(catKey, room);
+    updateCatHeader(catKey);
     renderSummary();
     renderBar();
     renderSchedule();
-    updateCatHeader(catKey);
   }
   // name changes need no derived recalc
 }
@@ -1152,6 +1153,27 @@ function updateCatHeader(catKey) {
     (ct ? `<span class="cat-total" style="color:${cat.color}">${fmt(ct)}</span>` : '') +
     (cp ? `<span class="badge badge-green">${fmt(cp)} ödendi</span>` : '') +
     chevronHTML;
+}
+
+function updateRoomHeader(catKey, room) {
+  const block = document.getElementById(`room-${catKey}-${encodeRoomId(room)}`);
+  if (!block) return;
+  const items = state[catKey].items[room] || [];
+  const rt = items.reduce((s, i) => s + pa(i.amount), 0);
+  const rp = items.reduce((s, i) => s + pa(i.paidAmount), 0);
+  const actionsEl = block.querySelector('.room-actions');
+  if (!actionsEl) return;
+  let totalEl = actionsEl.querySelector('.room-total');
+  if (rt) {
+    const text = fmt(rt) + (rp ? ' · ' + fmt(rp) + ' ödendi' : '');
+    if (totalEl) { totalEl.textContent = text; }
+    else {
+      totalEl = document.createElement('span');
+      totalEl.className = 'room-total';
+      totalEl.textContent = text;
+      actionsEl.insertBefore(totalEl, actionsEl.firstChild);
+    }
+  } else if (totalEl) { totalEl.remove(); }
 }
 
 function addItem(catKey, encodedRoom) {
