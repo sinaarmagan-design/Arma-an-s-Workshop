@@ -1278,12 +1278,17 @@ document.addEventListener('input', e => {
 // ── Cloud sharing via JSONbin.io ───────────────────────────────────────────
 
 const JSONBIN_API = 'https://api.jsonbin.io/v3/b';
+const JSONBIN_KEY = '$2a$10$PlIBzRQx271AaMoaomj5TeLhClKV2UzWnYy.0vtIOn19dePtTqdG6';
 const VERCEL_BASE = 'https://budget-dashboard-dacf.vercel.app/budget-dashboard.html';
 
 async function saveToCloud() {
   const res = await fetch(JSONBIN_API, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'X-Bin-Private': 'false' },
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Master-Key': JSONBIN_KEY,
+      'X-Bin-Private': 'false'
+    },
     body: JSON.stringify(serializeState())
   });
   if (!res.ok) throw new Error('Sunucu hatası: ' + res.status);
@@ -1292,7 +1297,9 @@ async function saveToCloud() {
 }
 
 async function loadFromCloud(binId) {
-  const res = await fetch(`${JSONBIN_API}/${binId}/latest`);
+  const res = await fetch(`${JSONBIN_API}/${binId}/latest`, {
+    headers: { 'X-Master-Key': JSONBIN_KEY }
+  });
   if (!res.ok) throw new Error('Yükleme hatası: ' + res.status);
   const data = await res.json();
   return data.record;
